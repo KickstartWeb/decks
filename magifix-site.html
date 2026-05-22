@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offre commerciale - Magifix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0A1929;
+    --ink-soft: #1a2a3a;
+    --cyan: #E0F4F8;
+    --cyan-soft: #EAF7FA;
+    --gray-num: #D0D4D8;
+    --teal: #3FC5D9;
+    --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: #1a1a1a;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .stage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slide {
+    width: min(100vw, 177.78vh);
+    height: min(56.25vw, 100vh);
+    aspect-ratio: 16 / 9;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+    display: none;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+  }
+  .slide.active { display: block; }
+
+  /* Background curve - two variants */
+  .slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  /* Variant A: cyan on right (covers, dividers) */
+  .slide[data-bg="right"]::before {
+    background:
+      linear-gradient(to right, transparent 0%, transparent 50%, var(--cyan) 50%, var(--cyan) 100%);
+    clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 45% 100%, 53% 50%, 50% 0%);
+  }
+  /* Replace clip-path with SVG curves for smoother shape */
+  .slide[data-bg="right"]::before {
+    background: var(--cyan);
+    clip-path: path('M 1200 0 L 1920 0 L 1920 1080 L 850 1080 C 1050 720 1100 360 1200 0 Z');
+  }
+  .slide[data-bg="left"]::before {
+    background: var(--cyan);
+    clip-path: path('M 0 0 L 800 0 C 700 360 750 720 950 1080 L 0 1080 Z');
+  }
+  .slide[data-bg="left-soft"]::before {
+    background: var(--cyan-soft);
+    clip-path: path('M 0 0 L 600 0 C 500 360 550 720 700 1080 L 0 1080 Z');
+  }
+  /* All slides scale relative to 1920x1080 base */
+  .slide { container-type: size; }
+  .canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 7% 8%;
+  }
+
+  /* Typography */
+  h1.cover-title {
+    font-weight: 900;
+    font-size: 8.5cqw;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    color: var(--ink);
+  }
+  .cover-eyebrow {
+    font-weight: 500;
+    font-size: 1.8cqw;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .cover-date {
+    font-weight: 400;
+    font-size: 1.2cqw;
+    color: var(--ink);
+    margin-top: 0.5cqw;
+  }
+  .brand {
+    font-weight: 900;
+    font-size: 1.5cqw;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .pageheader {
+    font-weight: 400;
+    font-size: 1.1cqw;
+    color: var(--ink);
+  }
+  .pageheader strong { font-weight: 800; }
+  .section-num {
+    font-weight: 900;
+    font-size: 11cqw;
+    color: var(--gray-num);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+  }
+  .section-title {
+    font-weight: 900;
+    font-size: 8cqw;
+    color: var(--ink);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  h2.heading {
+    font-weight: 900;
+    font-size: 4.2cqw;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  h3.subhead {
+    font-weight: 800;
+    font-size: 2.2cqw;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  p.body, ul.body li {
+    font-weight: 400;
+    font-size: 1.3cqw;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  ul.body { list-style: none; padding: 0; }
+  ul.body li {
+    position: relative;
+    padding-left: 2cqw;
+    margin-bottom: 1.4cqw;
+  }
+  ul.body li::before {
+    content: "•";
+    position: absolute;
+    left: 0.4cqw;
+    top: 0;
+    font-size: 1.3cqw;
+    color: var(--ink);
+  }
+  ul.body li ul li { font-size: 1.2cqw; margin-bottom: 0.6cqw; }
+  strong { font-weight: 800; }
+  .objectif-box {
+    border: 0.18cqw solid var(--teal);
+    border-radius: 0.4cqw;
+    padding: 1.5cqw 2cqw;
+    margin-top: 2.5cqw;
+    font-size: 1.3cqw;
+    line-height: 1.45;
+    font-weight: 700;
+  }
+  .objectif-box .label {
+    text-decoration: underline;
+    font-weight: 800;
+  }
+
+  /* Cover layout */
+  .cover-layout {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+  }
+  .cover-top { display: flex; flex-direction: column; }
+  .cover-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .cover-bot { display: flex; align-items: flex-end; }
+
+  /* Section divider layout */
+  .divider-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 3cqw;
+  }
+
+  /* Content slide layout */
+  .content-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 2.5cqw;
+  }
+  .content-body { flex: 1; }
+
+  /* Two-column block (subhead + paragraph stacks) */
+  .twoblock { display: flex; flex-direction: column; gap: 2cqw; }
+  .twoblock .blk h3 { margin-bottom: 0.6cqw; }
+
+  /* Three-card values */
+  .cards3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8cqw;
+    height: 100%;
+    align-items: stretch;
+  }
+  .card {
+    background: var(--white);
+    border-radius: 0.8cqw;
+    padding: 2.2cqw 2cqw;
+    box-shadow: 0 0.4cqw 1.5cqw rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2cqw;
+  }
+  .card h3 { font-size: 2cqw; font-weight: 900; line-height: 1.05; }
+  .card p { font-size: 1.05cqw; line-height: 1.5; }
+
+  /* Table */
+  table.budget {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9cqw;
+    margin-top: 0.8cqw;
+    background: var(--white);
+  }
+  table.budget th, table.budget td {
+    border: 0.08cqw solid var(--ink);
+    padding: 0.55cqw 0.9cqw;
+    text-align: left;
+    font-weight: 500;
+    vertical-align: top;
+  }
+  table.budget th {
+    font-weight: 900;
+    font-size: 1.15cqw;
+    background: transparent;
+    padding: 0.7cqw 0.9cqw;
+  }
+  table.budget td.amount {
+    text-align: right;
+    font-weight: 800;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-size: 1.05cqw;
+  }
+  table.budget td .line-title {
+    font-weight: 900;
+    font-size: 1cqw;
+    display: block;
+    margin-bottom: 0.25cqw;
+  }
+  table.budget td ul.cell {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  table.budget td ul.cell li {
+    position: relative;
+    padding-left: 1cqw;
+    margin-bottom: 0.1cqw;
+    font-size: 0.8cqw;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+  table.budget td ul.cell li::before {
+    content: "•";
+    position: absolute;
+    left: 0.2cqw;
+    top: 0;
+  }
+  table.budget tr.total td {
+    background: var(--cyan);
+    font-size: 1.15cqw;
+    font-weight: 900;
+    padding: 0.7cqw 0.9cqw;
+  }
+
+  /* Two-column timeline-style (planning) */
+  table.planning {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.15cqw;
+    margin-top: 2cqw;
+  }
+  table.planning th, table.planning td {
+    border: 0.1cqw solid var(--ink);
+    padding: 1cqw 1.4cqw;
+    text-align: left;
+    font-weight: 700;
+  }
+  table.planning th {
+    font-weight: 900;
+    font-size: 1.4cqw;
+  }
+  table.planning td:last-child { font-weight: 800; }
+
+  /* Closing slide */
+  .closing-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    gap: 2cqw;
+  }
+  .closing-title { font-weight: 900; font-size: 8cqw; line-height: 0.95; letter-spacing: -0.03em; }
+  .closing-sub { font-weight: 800; font-size: 3cqw; letter-spacing: -0.02em; }
+  .closing-body { font-style: italic; font-weight: 400; font-size: 1.4cqw; max-width: 60%; line-height: 1.5; }
+  .closing-contact { font-weight: 800; font-size: 1.3cqw; margin-top: 3cqw; }
+  .closing-brand { font-weight: 900; font-size: 2cqw; margin-top: 2cqw; }
+
+  /* Phase pills */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5cqw;
+    margin-top: 1cqw;
+  }
+  .phase {
+    background: var(--white);
+    border: 0.15cqw solid var(--ink);
+    border-radius: 0.6cqw;
+    padding: 1.8cqw;
+  }
+  .phase .num {
+    font-weight: 900;
+    font-size: 3.2cqw;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .phase h3 {
+    font-weight: 900;
+    font-size: 1.6cqw;
+    margin: 0.5cqw 0 0.8cqw;
+    letter-spacing: -0.02em;
+  }
+  .phase p { font-size: 1cqw; line-height: 1.45; }
+  .phase ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .phase ul li {
+    position: relative;
+    padding-left: 1.4cqw;
+    margin-bottom: 0.7cqw;
+    font-size: 1cqw;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .phase ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0.3cqw;
+    top: 0;
+  }
+
+  /* Navigation UI */
+  .nav-ui {
+    position: fixed;
+    bottom: 1.5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    padding: 8px 16px;
+    border-radius: 100px;
+    color: #fff;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+  .nav-ui button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .nav-ui button:hover { background: rgba(255,255,255,0.15); }
+  .nav-counter { min-width: 50px; text-align: center; }
+
+  /* Print: stack all slides */
+  @media print {
+    @page { size: 1920px 1080px; margin: 0; }
+    html, body { background: white; overflow: visible; height: auto; }
+    .stage { display: block; height: auto; }
+    .slide {
+      display: block !important;
+      page-break-after: always;
+      box-shadow: none;
+      width: 1920px;
+      height: 1080px;
+      aspect-ratio: unset;
+    }
+    .nav-ui { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. COVER -->
+  <section class="slide active" data-bg="right">
+    <div class="canvas cover-layout">
+      <div class="cover-top">
+        <div class="cover-eyebrow">Offre commerciale</div>
+        <div class="cover-date">Mai 2026</div>
+      </div>
+      <div class="cover-mid">
+        <h1 class="cover-title">Magifix</h1>
+      </div>
+      <div class="cover-bot">
+        <div class="brand">KickstartWeb</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. DIVIDER 01 Contexte -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">01</div>
+        <div class="section-title">Contexte</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Contexte -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">01.<strong>Contexte</strong></div>
+      <div class="content-body twoblock" style="margin-top:2.5cqw;">
+        <div class="blk">
+          <h3 class="subhead">Le projet Magifix</h3>
+          <ul class="body" style="margin-top:1cqw;">
+            <li>Nouvelle gamme Magifer : un <strong>portail standardisé</strong>.</li>
+            <li><strong>4 modèles × 3 hauteurs × 3 longueurs × 3 couleurs</strong> = <strong>108 combinaisons</strong>.</li>
+            <li>Vendu en ligne via un site e-commerce dédié, sur un sous-domaine de magifer.com.</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <h3 class="subhead">Deux cibles, deux discours</h3>
+          <ul class="body" style="margin-top:1cqw;">
+            <li><strong>Particuliers (B2C)</strong> : sécurité, intimité, esthétique, <strong>simplicité de pose</strong> (auto-installation), budget ~4 000 € motorisé.</li>
+            <li><strong>Entrepreneurs parcs &amp; jardins (B2B)</strong> : volume, marges, garantie, simplicité de pose.</li>
+            <li>Site B2C-first, avec <strong>espace partenaire B2B dédié</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. DIVIDER 02 Objectifs -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">02</div>
+        <div class="section-title">Objectifs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Objectifs -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">02.<strong>Objectifs</strong></div>
+      <div class="content-body twoblock" style="margin-top:2.5cqw;">
+        <div class="blk">
+          <h3 class="subhead">Lancement Q4 2026, pleine opération 1er janvier 2027</h3>
+          <ul class="body" style="margin-top:1cqw;">
+            <li>Site opérationnel au <strong>dernier trimestre 2026</strong>.</li>
+            <li>Période de rodage avant que <strong>2027 devienne l'année Magifix</strong>.</li>
+            <li>Capacité à absorber le volume sans friction dès le <strong>1er janvier 2027</strong>.</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <h3 class="subhead">Construire un réseau B2B dès le lancement</h3>
+          <ul class="body" style="margin-top:1cqw;">
+            <li>Espace partenaire <strong>présent dès le jour 1</strong>.</li>
+            <li>Objectif : <strong>volume de commandes B2B significatif</strong> via un réseau d'entrepreneurs parcs &amp; jardins.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. DIVIDER 03 Périmètre -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">03</div>
+        <div class="section-title">Périmètre</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Structure produit -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">03.<strong>Périmètre</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw;">Structure produit et catalogue</h2>
+      <ul class="body" style="margin-top:1cqw;">
+        <li><strong>1 catégorie « portail »</strong> au lancement (les motorisés/manuels pourront être séparés plus tard).</li>
+        <li><strong>4 fiches produits</strong> - différenciation par l'habillage (lisse, relief, etc.).</li>
+        <li>Produit variable WooCommerce : <strong>27 variations par modèle</strong> (3 hauteurs × 3 longueurs × 3 couleurs), soit <strong>108 combinaisons</strong> au total. Option motorisation en supplément.</li>
+        <li>Sous-domaine Magifix sur magifer.com - conserve la notoriété de la marque mère tout en séparant clairement les deux gammes.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8. Design & contenu -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">03.<strong>Périmètre</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw;">Design &amp; contenu</h2>
+      <ul class="body" style="margin-top:1cqw;">
+        <li>Charte graphique <strong>épurée et mature</strong> : blanc, bleu foncé, gris-noir. Une seule police d'écriture, jouée en graissages.</li>
+        <li><strong>Rédaction complète des contenus</strong> (maquette textuelle, fiches produits, pages institutionnelles) en phase 1.</li>
+        <li>Intégration de <strong>vidéos d'installation</strong> fournies par Magifer (Stéphane) sur les fiches produits - argument de vente majeur.</li>
+        <li>Page <strong>Réalisations</strong> : galerie esthétique + emplacement prévu pour <strong>20 témoignages vidéo clients</strong>.</li>
+        <li><strong>14 pages incluses</strong> au total (détaillées sur la slide suivante).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8b. Liste des pages -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout" style="padding: 4% 6%;">
+      <div class="pageheader">03.<strong>Périmètre</strong></div>
+      <h2 class="heading" style="margin-top:0.5cqw; font-size:2.8cqw;">Les 14 pages du site</h2>
+      <table class="budget" style="margin-top:1.2cqw;">
+        <thead>
+          <tr>
+            <th style="width:30%;">Page</th>
+            <th>Rôle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>1. Accueil</strong></td><td>Vitrine principale : argumentaire produit, points forts, redirection vers fiches produits et espace pro</td></tr>
+          <tr><td><strong>2. Gamme Magifix</strong></td><td>Page catégorie regroupant les 4 modèles avec aperçu visuel et accès direct aux fiches</td></tr>
+          <tr><td><strong>3-6. Fiches produits (×4)</strong></td><td>Sélection des variations (hauteur, longueur, couleur, motorisation), prix, vidéo d'installation, section FAQ en bas de page, ajout panier</td></tr>
+          <tr><td><strong>7. Réalisations</strong></td><td>Galerie photos + emplacement pour 20 témoignages vidéo clients (preuve sociale)</td></tr>
+          <tr><td><strong>8. Espace pro (B2B)</strong></td><td>Inscription dédiée, login, tarification HTVA, accès au suivi des commandes, adresses, détails du compte</td></tr>
+          <tr><td><strong>9. À propos</strong></td><td>Histoire de Magifer, équipe, valeurs - rassure et crédibilise la marque</td></tr>
+          <tr><td><strong>10. Contact</strong></td><td>Formulaire, coordonnées, adresse, horaires</td></tr>
+          <tr><td><strong>11. Pages légales</strong></td><td>CGV, Conditions de retour, Politique de confidentialité, Mentions légales</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 9. Espace B2B + VIES -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">03.<strong>Périmètre</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw;">Espace partenaire B2B</h2>
+      <ul class="body" style="margin-top:1cqw;">
+        <li>Inscription dédiée avec <strong>vérification automatique du numéro de TVA</strong> via l'API officielle VIES (Commission européenne, gratuite et autoritative).</li>
+        <li>Validation à l'inscription, <strong>fallback approbation manuelle</strong> si VIES indisponible.</li>
+        <li>Espace logué avec <strong>tarification B2B distincte</strong> (HTVA, autoliquidation pour intracom).</li>
+        <li>Tableau de bord partenaire : commandes, historique, suivi.</li>
+      </ul>
+      <div class="objectif-box">
+        <span class="label">Objectif :</span> Automatiser l'onboarding partenaire et offrir une expérience pro dès le premier clic, sans validation manuelle pour les inscriptions standard.
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Paiement & livraison -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">03.<strong>Périmètre</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw;">Paiement &amp; livraison</h2>
+      <ul class="body" style="margin-top:1cqw;">
+        <li><strong>Stripe</strong> (carte) + <strong>virement bancaire</strong>. Pas de PayPal.</li>
+        <li><strong>Livraison gratuite dans un rayon de 100 km autour de Laneffe</strong> - calculée automatiquement à partir du code postal.</li>
+        <li>Au-delà de 100 km : tarification à définir (variable selon distance ou forfait par tranche).</li>
+        <li>Retrait sur site également proposé. Délai cible : 72h avec rappel téléphonique.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 11. DIVIDER 04 Notre approche -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">04</div>
+        <div class="section-title">Approche</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Processus 3 phases -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout">
+      <div class="pageheader">04.<strong>Approche</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw;">Un processus en 3 phases</h2>
+      <p class="body" style="max-width:75%;">Chaque phase démarre uniquement après <strong>validation écrite</strong> de la précédente. Deux allers-retours d'itération inclus par phase ; au-delà, facturation au temps passé.</p>
+      <div class="phases" style="margin-top:2cqw;">
+        <div class="phase">
+          <div class="num">01</div>
+          <h3>Contenu</h3>
+          <ul>
+            <li>Maquette textuelle complète</li>
+            <li>Rédaction de toutes les pages et fiches produits</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="num">02</div>
+          <h3>Design</h3>
+          <ul>
+            <li>Maquettes Figma des templates clés</li>
+            <li>Versions mobile et desktop</li>
+            <li>Validation client avant développement</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="num">03</div>
+          <h3>Développement</h3>
+          <ul>
+            <li>Site WooCommerce complet</li>
+            <li>Tests et corrections</li>
+            <li>Vidéo de formation à l'administration</li>
+            <li>Mise en production</li>
+            <li>Validation finale et remise des accès</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. DIVIDER 05 Budget -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">05</div>
+        <div class="section-title">Budget</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. Détail budgétaire -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout" style="padding: 4% 6%;">
+      <div class="pageheader">05.<strong>Budget</strong></div>
+      <h2 class="heading" style="margin-top:0.5cqw; text-align:center; font-size:2.8cqw;">Détail budgétaire</h2>
+      <table class="budget">
+        <thead>
+          <tr>
+            <th>Prestation</th>
+            <th style="text-align:right;">Montant HTVA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="line-title">Site e-commerce de base</span>
+              <ul class="cell">
+                <li>Processus en 3 phases : contenu, design, développement WooCommerce</li>
+                <li>4 produits variables × 108 combinaisons (hauteur × longueur × couleur)</li>
+                <li>Pages institutionnelles, CGV, Conditions de retour</li>
+                <li>Paiement Stripe + virement bancaire</li>
+                <li>Logique de livraison gratuite dans un rayon de 100 km</li>
+                <li>Page Réalisations (galerie + emplacement témoignages)</li>
+                <li>Tracking e-commerce : GA4 + GTM + Consent Mode + Pixel Meta + suivi conversions</li>
+              </ul>
+            </td>
+            <td class="amount">4 999 €</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="line-title">Espace partenaire B2B</span>
+              <ul class="cell">
+                <li>Inscription dédiée avec validation</li>
+                <li>Espace logué avec tarification B2B distincte</li>
+                <li>Tableau de bord partenaire (commandes, historique)</li>
+              </ul>
+            </td>
+            <td class="amount">1 920 €</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="line-title">Intégration VIES (vérification TVA)</span>
+              <ul class="cell">
+                <li>Validation automatique via l'API officielle VIES</li>
+                <li>Fallback approbation manuelle si VIES indisponible</li>
+              </ul>
+            </td>
+            <td class="amount">640 €</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="line-title">Lecteur vidéo sur les fiches produits</span>
+            </td>
+            <td class="amount">320 €</td>
+          </tr>
+          <tr class="total">
+            <td><strong>Total</strong></td>
+            <td class="amount"><strong>7 879 € HTVA</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 16. Modalités -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">05.<strong>Budget</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw;">Modalités de paiement</h2>
+      <div class="twoblock" style="margin-top:2cqw;">
+        <div class="blk">
+          <h3 class="subhead">Acompte 50 % à la signature</h3>
+          <p class="body" style="margin-top:0.6cqw;"><strong>3 939,50 € HTVA</strong> - déclenche le démarrage de la phase 1 (contenu).</p>
+        </div>
+        <div class="blk">
+          <h3 class="subhead">Solde 50 % à la mise en production</h3>
+          <p class="body" style="margin-top:0.6cqw;"><strong>3 939,50 € HTVA</strong> - à la livraison du site en production et remise des accès.</p>
+        </div>
+        <div class="blk">
+          <p class="body" style="font-size:1.1cqw;"><em>TVA belge applicable (21 %) sauf B2B intracom (autoliquidation).</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. DIVIDER 06 Planning -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">06</div>
+        <div class="section-title">Planning</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18. Calendrier -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout">
+      <div class="pageheader">06.<strong>Planning</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw; text-align:center;">Calendrier indicatif</h2>
+      <table class="planning">
+        <thead>
+          <tr>
+            <th>Jalon</th>
+            <th style="text-align:right;">Date cible</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Signature + acompte</td><td style="text-align:right;">Fin mai 2026</td></tr>
+          <tr><td>Phase 1 - Contenu (validation client)</td><td style="text-align:right;">Juillet 2026</td></tr>
+          <tr><td>Phase 2 - Design (validation client)</td><td style="text-align:right;">Septembre 2026</td></tr>
+          <tr><td>Phase 3 - Développement + tests</td><td style="text-align:right;">Octobre-Novembre 2026</td></tr>
+          <tr><td>Mise en ligne (lancement Q4)</td><td style="text-align:right;">Décembre 2026</td></tr>
+          <tr class="total" style="background: var(--cyan);"><td><strong>Pleine opération</strong></td><td style="text-align:right;"><strong>1er janvier 2027</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="body" style="margin-top:1.5cqw; font-size:1cqw; font-style:italic;">Calendrier dépendant de la réactivité Magifer sur les validations et de la disponibilité des contenus vidéo.</p>
+    </div>
+  </section>
+
+  <!-- 19. DIVIDER 07 Hors périmètre -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">07</div>
+        <div class="section-title">Hors périmètre</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20. Hors périmètre -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">07.<strong>Hors périmètre</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw;">Devis séparés à venir</h2>
+      <p class="body" style="margin-top:1cqw;">Ces éléments ne sont <strong>pas inclus</strong> dans la présente offre et feront l'objet de propositions distinctes :</p>
+      <ul class="body" style="margin-top:1.5cqw;">
+        <li><strong>Marketing de lancement</strong> - Meta Ads, Google Ads, retargeting des visiteurs non-convertis. Devis dédié après cadrage budget.</li>
+        <li><strong>Photographie produit professionnelle</strong> - si besoin au-delà des contenus existants (pipeline AI disponible).</li>
+        <li><strong>Maintenance &amp; retainer mensuel</strong> post-lancement - mises à jour WordPress, monitoring, support technique.</li>
+        <li><strong>Hébergement</strong> - actuellement Infomaniak (KickstartWeb), à conserver. Inclus dans le retainer si souscrit.</li>
+        <li><strong>Catégories ou produits supplémentaires</strong> post-lancement (séparation motorisés/manuels, accessoires, etc.).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 21. CLOSING -->
+  <section class="slide" data-bg="right">
+    <div class="canvas closing-layout">
+      <div class="closing-title">Merci !</div>
+      <div class="closing-sub">Quelle est la prochaine étape ?</div>
+      <p class="closing-body">Validons ensemble cette proposition lors de notre prochain échange. À ton signal, je prépare la facture d'acompte et nous lançons la phase 1 dans la foulée.</p>
+      <div class="closing-contact">osman@kickstartweb.com - 0488 303 454</div>
+      <div class="closing-brand">KickstartWeb</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-ui">
+  <button id="prev" aria-label="Précédent">‹</button>
+  <span class="nav-counter"><span id="cur">1</span> / <span id="tot">21</span></span>
+  <button id="next" aria-label="Suivant">›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let idx = 0;
+  document.getElementById('tot').textContent = total;
+  function show(i) {
+    idx = (i + total) % total;
+    slides.forEach((s, n) => s.classList.toggle('active', n === idx));
+    document.getElementById('cur').textContent = idx + 1;
+    location.hash = idx + 1;
+  }
+  document.getElementById('next').onclick = () => show(idx + 1);
+  document.getElementById('prev').onclick = () => show(idx - 1);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(idx + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(total - 1);
+  });
+  if (location.hash) {
+    const n = parseInt(location.hash.slice(1));
+    if (!isNaN(n) && n >= 1 && n <= total) show(n - 1);
+  }
+</script>
+</body>
+</html>

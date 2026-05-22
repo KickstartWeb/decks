@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing de lancement - Magifix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0A1929;
+    --ink-soft: #1a2a3a;
+    --cyan: #E0F4F8;
+    --cyan-soft: #EAF7FA;
+    --gray-num: #D0D4D8;
+    --teal: #3FC5D9;
+    --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: #1a1a1a;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .stage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slide {
+    width: min(100vw, 177.78vh);
+    height: min(56.25vw, 100vh);
+    aspect-ratio: 16 / 9;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+    display: none;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+  }
+  .slide.active { display: block; }
+
+  /* Background curve - two variants */
+  .slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  /* Variant A: cyan on right (covers, dividers) */
+  .slide[data-bg="right"]::before {
+    background:
+      linear-gradient(to right, transparent 0%, transparent 50%, var(--cyan) 50%, var(--cyan) 100%);
+    clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 45% 100%, 53% 50%, 50% 0%);
+  }
+  /* Replace clip-path with SVG curves for smoother shape */
+  .slide[data-bg="right"]::before {
+    background: var(--cyan);
+    clip-path: path('M 1200 0 L 1920 0 L 1920 1080 L 850 1080 C 1050 720 1100 360 1200 0 Z');
+  }
+  .slide[data-bg="left"]::before {
+    background: var(--cyan);
+    clip-path: path('M 0 0 L 800 0 C 700 360 750 720 950 1080 L 0 1080 Z');
+  }
+  .slide[data-bg="left-soft"]::before {
+    background: var(--cyan-soft);
+    clip-path: path('M 0 0 L 600 0 C 500 360 550 720 700 1080 L 0 1080 Z');
+  }
+  /* All slides scale relative to 1920x1080 base */
+  .slide { container-type: size; }
+  .canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 7% 8%;
+  }
+
+  /* Typography */
+  h1.cover-title {
+    font-weight: 900;
+    font-size: 8.5cqw;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    color: var(--ink);
+  }
+  .cover-eyebrow {
+    font-weight: 500;
+    font-size: 1.8cqw;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .cover-date {
+    font-weight: 400;
+    font-size: 1.2cqw;
+    color: var(--ink);
+    margin-top: 0.5cqw;
+  }
+  .brand {
+    font-weight: 900;
+    font-size: 1.5cqw;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .pageheader {
+    font-weight: 400;
+    font-size: 1.1cqw;
+    color: var(--ink);
+  }
+  .pageheader strong { font-weight: 800; }
+  .section-num {
+    font-weight: 900;
+    font-size: 11cqw;
+    color: var(--gray-num);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+  }
+  .section-title {
+    font-weight: 900;
+    font-size: 8cqw;
+    color: var(--ink);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  h2.heading {
+    font-weight: 900;
+    font-size: 4.2cqw;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  h3.subhead {
+    font-weight: 800;
+    font-size: 2.2cqw;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  p.body, ul.body li {
+    font-weight: 400;
+    font-size: 1.3cqw;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  ul.body { list-style: none; padding: 0; }
+  ul.body li {
+    position: relative;
+    padding-left: 2cqw;
+    margin-bottom: 1.4cqw;
+  }
+  ul.body li::before {
+    content: "•";
+    position: absolute;
+    left: 0.4cqw;
+    top: 0;
+    font-size: 1.3cqw;
+    color: var(--ink);
+  }
+  ul.body li ul li { font-size: 1.2cqw; margin-bottom: 0.6cqw; }
+  strong { font-weight: 800; }
+  .objectif-box {
+    border: 0.18cqw solid var(--teal);
+    border-radius: 0.4cqw;
+    padding: 1.5cqw 2cqw;
+    margin-top: 2.5cqw;
+    font-size: 1.3cqw;
+    line-height: 1.45;
+    font-weight: 700;
+  }
+  .objectif-box .label {
+    text-decoration: underline;
+    font-weight: 800;
+  }
+
+  /* Cover layout */
+  .cover-layout {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+  }
+  .cover-top { display: flex; flex-direction: column; }
+  .cover-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .cover-bot { display: flex; align-items: flex-end; }
+
+  /* Section divider layout */
+  .divider-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 3cqw;
+  }
+
+  /* Content slide layout */
+  .content-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 2.5cqw;
+  }
+  .content-body { flex: 1; }
+
+  /* Two-column block (subhead + paragraph stacks) */
+  .twoblock { display: flex; flex-direction: column; gap: 2cqw; }
+  .twoblock .blk h3 { margin-bottom: 0.6cqw; }
+
+  /* Three-card values */
+  .cards3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8cqw;
+    height: 100%;
+    align-items: stretch;
+  }
+  .card {
+    background: var(--white);
+    border-radius: 0.8cqw;
+    padding: 2.2cqw 2cqw;
+    box-shadow: 0 0.4cqw 1.5cqw rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2cqw;
+  }
+  .card h3 { font-size: 2cqw; font-weight: 900; line-height: 1.05; }
+  .card p { font-size: 1.05cqw; line-height: 1.5; }
+
+  /* Table */
+  table.budget {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9cqw;
+    margin-top: 0.8cqw;
+    background: var(--white);
+  }
+  table.budget th, table.budget td {
+    border: 0.08cqw solid var(--ink);
+    padding: 0.55cqw 0.9cqw;
+    text-align: left;
+    font-weight: 500;
+    vertical-align: top;
+  }
+  table.budget th {
+    font-weight: 900;
+    font-size: 1.15cqw;
+    background: transparent;
+    padding: 0.7cqw 0.9cqw;
+  }
+  table.budget td.amount {
+    text-align: right;
+    font-weight: 800;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-size: 1.05cqw;
+  }
+  table.budget td .line-title {
+    font-weight: 900;
+    font-size: 1cqw;
+    display: block;
+    margin-bottom: 0.25cqw;
+  }
+  table.budget td ul.cell {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  table.budget td ul.cell li {
+    position: relative;
+    padding-left: 1cqw;
+    margin-bottom: 0.1cqw;
+    font-size: 0.8cqw;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+  table.budget td ul.cell li::before {
+    content: "•";
+    position: absolute;
+    left: 0.2cqw;
+    top: 0;
+  }
+  table.budget tr.total td {
+    background: var(--cyan);
+    font-size: 1.15cqw;
+    font-weight: 900;
+    padding: 0.7cqw 0.9cqw;
+  }
+
+  /* Two-column timeline-style (planning) */
+  table.planning {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.15cqw;
+    margin-top: 2cqw;
+  }
+  table.planning th, table.planning td {
+    border: 0.1cqw solid var(--ink);
+    padding: 1cqw 1.4cqw;
+    text-align: left;
+    font-weight: 700;
+  }
+  table.planning th {
+    font-weight: 900;
+    font-size: 1.4cqw;
+  }
+  table.planning td:last-child { font-weight: 800; }
+
+  /* Closing slide */
+  .closing-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    gap: 2cqw;
+  }
+  .closing-title { font-weight: 900; font-size: 8cqw; line-height: 0.95; letter-spacing: -0.03em; }
+  .closing-sub { font-weight: 800; font-size: 3cqw; letter-spacing: -0.02em; }
+  .closing-body { font-style: italic; font-weight: 400; font-size: 1.4cqw; max-width: 60%; line-height: 1.5; }
+  .closing-contact { font-weight: 800; font-size: 1.3cqw; margin-top: 3cqw; }
+  .closing-brand { font-weight: 900; font-size: 2cqw; margin-top: 2cqw; }
+
+  /* Phase pills */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5cqw;
+    margin-top: 1cqw;
+  }
+  .phase {
+    background: var(--white);
+    border: 0.15cqw solid var(--ink);
+    border-radius: 0.6cqw;
+    padding: 1.8cqw;
+  }
+  .phase .num {
+    font-weight: 900;
+    font-size: 3.2cqw;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .phase h3 {
+    font-weight: 900;
+    font-size: 1.6cqw;
+    margin: 0.5cqw 0 0.8cqw;
+    letter-spacing: -0.02em;
+  }
+  .phase p { font-size: 1cqw; line-height: 1.45; }
+  .phase ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .phase ul li {
+    position: relative;
+    padding-left: 1.4cqw;
+    margin-bottom: 0.7cqw;
+    font-size: 1cqw;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .phase ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0.3cqw;
+    top: 0;
+  }
+
+  /* Navigation UI */
+  .nav-ui {
+    position: fixed;
+    bottom: 1.5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    padding: 8px 16px;
+    border-radius: 100px;
+    color: #fff;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+  .nav-ui button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .nav-ui button:hover { background: rgba(255,255,255,0.15); }
+  .nav-counter { min-width: 50px; text-align: center; }
+
+  /* Print: stack all slides */
+  @media print {
+    @page { size: 1920px 1080px; margin: 0; }
+    html, body { background: white; overflow: visible; height: auto; }
+    .stage { display: block; height: auto; }
+    .slide {
+      display: block !important;
+      page-break-after: always;
+      box-shadow: none;
+      width: 1920px;
+      height: 1080px;
+      aspect-ratio: unset;
+    }
+    .nav-ui { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. COVER -->
+  <section class="slide active" data-bg="right">
+    <div class="canvas cover-layout">
+      <div class="cover-top">
+        <div class="cover-eyebrow">Marketing de lancement</div>
+        <div class="cover-date">Mai 2026</div>
+      </div>
+      <div class="cover-mid">
+        <h1 class="cover-title">Magifix</h1>
+      </div>
+      <div class="cover-bot">
+        <div class="brand">KickstartWeb</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. DIVIDER 01 Contexte -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">01</div>
+        <div class="section-title">Contexte</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Contexte -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">01.<strong>Contexte</strong></div>
+      <div class="content-body twoblock" style="margin-top:2.5cqw;">
+        <div class="blk">
+          <h3 class="subhead">Où vous en êtes aujourd'hui</h3>
+          <ul class="body" style="margin-top:1cqw;">
+            <li>Acquisition quasi <strong>100 % bouche-à-oreille</strong>; aucun historique de publicité payante.</li>
+            <li>Environ <strong>80 demandes de devis par mois</strong>, taux de signature historique <strong>~1 sur 3</strong>.</li>
+            <li>Votre expérience sur-mesure le montre : un portail se décide en <strong>~15 jours</strong>, achat réfléchi souvent finalisé au showroom. Magifix suivra la même logique.</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <h3 class="subhead">Votre meilleur atout pour lancer</h3>
+          <ul class="body" style="margin-top:1cqw;">
+            <li>Une base de <strong>12 000 emails valides</strong> (clients et prospects).</li>
+            <li>La marque <strong>Magifer</strong>, déjà reconnue, comme gage de qualité.</li>
+            <li>Un produit accessible (<strong>~4 000 €</strong>) face au sur-mesure (~10 000 €).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. DIVIDER 02 Objectifs -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">02</div>
+        <div class="section-title">Objectifs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Objectifs -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">02.<strong>Objectifs</strong></div>
+      <div class="content-body twoblock" style="margin-top:2.5cqw;">
+        <div class="blk">
+          <h3 class="subhead">L'objectif de l'année 1</h3>
+          <ul class="body" style="margin-top:1cqw;">
+            <li>Écouler les <strong>100 premiers portails Magifix</strong>, soit <strong>8 à 10 ventes par mois</strong>.</li>
+            <li>Cohérent avec votre activité : c'est <strong>moins de la moitié</strong> de ce que vous signez déjà en sur-mesure.</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <h3 class="subhead">Le bon indicateur de réussite</h3>
+          <ul class="body" style="margin-top:1cqw;">
+            <li>On pilote sur le <strong>lead qualifié</strong>, pas sur l'achat direct en ligne.</li>
+            <li>Un portail à 4 000 € ne s'achète pas sur un coup de tête : le taux de conversion direct est <strong>naturellement bas, et c'est normal</strong>.</li>
+            <li>On mesure le <strong>coût par lead</strong>, le <strong>taux lead vers vente</strong>, et les conversions différées.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Mesure - les 4 parcours -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout" style="padding: 4% 6%;">
+      <div class="pageheader">02.<strong>Objectifs</strong></div>
+      <h2 class="heading" style="margin-top:0.5cqw; font-size:2.8cqw;">Mesurer tout le parcours, showroom compris</h2>
+      <table class="budget" style="margin-top:1.2cqw;">
+        <thead>
+          <tr>
+            <th style="width:38%;">Parcours client</th>
+            <th>Comment on le mesure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>1. Achat direct en ligne</strong></td><td>Suivi e-commerce GA4 + attribution à la campagne grâce aux liens de suivi (UTM)</td></tr>
+          <tr><td><strong>2. Demande de visite showroom</strong></td><td>Formulaire dédié sur le site, traité comme une conversion suivie et attribuée à sa source</td></tr>
+          <tr><td><strong>3. Visite showroom puis signature</strong></td><td>Pont hors-ligne : un Google Sheet partagé relie la signature à la campagne d'origine (liaison ERP possible plus tard)</td></tr>
+          <tr><td><strong>4. Showroom puis commande en ligne</strong></td><td>Un code Magifix remis au showroom, saisi à la commande en ligne</td></tr>
+        </tbody>
+      </table>
+      <p class="body" style="margin-top:1cqw; font-size:1cqw; font-style:italic;">Le socle de tout le dispositif : des liens de suivi (UTM) sur chaque campagne, email et contenu, pour savoir d'où vient chaque visite.</p>
+    </div>
+  </section>
+
+  <!-- 7. DIVIDER 03 Stratégie -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">03</div>
+        <div class="section-title">Stratégie</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Stratégie - 4 principes -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">03.<strong>Stratégie</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw;">Quatre principes directeurs</h2>
+      <ul class="body" style="margin-top:1cqw;">
+        <li><strong>Accueil orienté B2C, page B2B dédiée</strong> alimentée par ses propres canaux. On réévalue la répartition après <strong>un trimestre</strong> de données.</li>
+        <li><strong>Recréer le bouche-à-oreille numériquement</strong> : activation de la base email + preuve sociale (galerie, témoignages).</li>
+        <li><strong>Mesurer la conversion différée et assistée</strong>, pas seulement le dernier clic.</li>
+        <li><strong>Compléter le sur-mesure, pas le concurrencer</strong> : Magifix pour les prospects au budget plus serré, qui partiraient sinon à la concurrence.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9. DIVIDER 04 Approche -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">04</div>
+        <div class="section-title">Approche</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Les 3 phases -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout">
+      <div class="pageheader">04.<strong>Approche</strong></div>
+      <h2 class="heading" style="margin-top:1.2cqw;">Un lancement en 3 phases</h2>
+      <p class="body" style="max-width:80%; margin-top:0.4cqw;">Ces quatre principes se déploient en trois temps : <strong>préparer</strong> l'audience, <strong>tester</strong> pour trouver ce qui convertit, puis <strong>optimiser</strong> sur les gagnants.</p>
+      <div class="phases" style="margin-top:1cqw;">
+        <div class="phase">
+          <div class="num">01</div>
+          <h3>Pré-lancement</h3>
+          <ul>
+            <li><strong>6 semaines avant l'ouverture</strong></li>
+            <li>Réveil de la base 12 000 (séquence de 4 emails)</li>
+            <li>2 pages de capture (B2C + B2B)</li>
+            <li>Contenu organique (vidéos d'installation, 3D)</li>
+            <li>Prospection Meta B2C + B2B pour amorcer les audiences à recibler</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="num">02</div>
+          <h3>Lancement</h3>
+          <ul>
+            <li><strong>Mois 1 à 3</strong></li>
+            <li>Test multi-canal complet (~5 campagnes)</li>
+            <li>Budget de test pour trouver vite ce qui convertit</li>
+            <li>Séquence email de lancement</li>
+            <li>Réunion mensuelle de 2h, en collaboratif</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="num">03</div>
+          <h3>Croisière</h3>
+          <ul>
+            <li><strong>Mois 4 et au-delà</strong></li>
+            <li>Couper les perdantes, scaler les gagnantes (~4 campagnes)</li>
+            <li>Bilan stratégique B2C / B2B à 3 mois</li>
+            <li>Montée en charge du B2B</li>
+            <li>Pilotage mensuel récurrent</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Roster de campagnes -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout" style="padding: 4% 6%;">
+      <div class="pageheader">04.<strong>Approche</strong></div>
+      <h2 class="heading" style="margin-top:0.5cqw; font-size:2.8cqw;">Les 5 campagnes au lancement</h2>
+      <p class="body" style="margin-top:0.4cqw; font-size:1.05cqw;">Les <strong>deux campagnes de prospection (B2C et B2B)</strong> démarrent dès le <strong>pré-lancement (phase 01)</strong> pour amorcer les audiences à recibler. Les campagnes de conversion et de recherche suivent en <strong>phase 02 (test)</strong>.</p>
+      <table class="budget" style="margin-top:1cqw;">
+        <thead>
+          <tr>
+            <th>Campagne</th>
+            <th style="width:12%;">Plateforme</th>
+            <th style="width:9%;">Cible</th>
+            <th style="width:26%;">Destination</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="4" style="background:var(--cyan); font-weight:900; font-size:0.95cqw; padding:0.4cqw 0.9cqw; letter-spacing:-0.01em;">Phase 01 - Pré-lancement</td></tr>
+          <tr>
+            <td><span class="line-title">Prospection / vues vidéo</span><ul class="cell"><li>Faire découvrir Magifix largement et construire l'audience à recibler</li></ul></td>
+            <td>Meta</td><td>B2C</td><td>Page de capture B2C</td>
+          </tr>
+          <tr>
+            <td><span class="line-title">Prospection parcs &amp; jardins</span><ul class="cell"><li>Toucher les entrepreneurs et les amener vers l'espace pro</li></ul></td>
+            <td>Meta</td><td>B2B</td><td>Page de capture B2B, puis espace pro</td>
+          </tr>
+          <tr><td colspan="4" style="background:var(--cyan); font-weight:900; font-size:0.95cqw; padding:0.4cqw 0.9cqw; letter-spacing:-0.01em;">Phase 02 - Lancement</td></tr>
+          <tr>
+            <td><span class="line-title">Conversion + retargeting</span><ul class="cell"><li>Relancer les visiteurs intéressés vers le devis ou la commande</li></ul></td>
+            <td>Meta</td><td>B2C</td><td>Accueil + fiches produits</td>
+          </tr>
+          <tr>
+            <td><span class="line-title">Recherche intention forte</span><ul class="cell"><li>Capter les gens qui cherchent déjà un portail sur Google</li></ul></td>
+            <td>Google</td><td>B2C</td><td>Fiches produits</td>
+          </tr>
+          <tr>
+            <td><span class="line-title">PMax / retargeting</span><ul class="cell"><li>Rester visible sur Google et relancer les visiteurs non convertis</li></ul></td>
+            <td>Google</td><td>B2C</td><td>Accueil + fiches produits</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="body" style="margin-top:0.8cqw; font-size:1cqw;"><strong>+ Activation de la base email (12 000 contacts)</strong> : annonce de lancement et relances. Canal propre, sans budget média, inclus dans la mise en place et le pilotage.</p>
+      <p class="body" style="margin-top:0.5cqw; font-size:0.9cqw; font-style:italic;">En croisière (phase 03), environ 4 campagnes payantes actives après coupe des moins performantes; la gestion mensuelle suit ce nombre.</p>
+    </div>
+  </section>
+
+  <!-- 12. DIVIDER 05 Budget -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">05</div>
+        <div class="section-title">Budget</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. Budget - mise en place -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout" style="padding: 4% 6%;">
+      <div class="pageheader">05.<strong>Budget</strong></div>
+      <h2 class="heading" style="margin-top:0.5cqw; font-size:2.8cqw;">Mise en place (une seule fois)</h2>
+      <table class="budget">
+        <thead>
+          <tr>
+            <th>Prestation</th>
+            <th style="text-align:right;">Montant HTVA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="line-title">Setup infrastructure marketing</span>
+              <ul class="cell">
+                <li>Liens de suivi (UTM) sur chaque canal, pour identifier la source de chaque visite</li>
+                <li>Pont de mesure hors-ligne : Google Sheet partagé + capture des clics + automatisation</li>
+                <li>2 pages de capture (B2C + B2B)</li>
+                <li>Séquence email de pré-lancement (4 envois)</li>
+                <li>Audiences de retargeting (Meta, Google)</li>
+                <li>Tableau de bord de suivi des performances (par canal et par campagne)</li>
+              </ul>
+            </td>
+            <td class="amount">1 760 €</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="line-title">Création des 5 campagnes</span>
+              <ul class="cell">
+                <li>Meta B2C (×2), Meta B2B, Google Search B2C, Google PMax B2C</li>
+                <li>Structure, audiences, créatifs, textes, test du déclenchement des conversions</li>
+              </ul>
+            </td>
+            <td class="amount">1 600 €</td>
+          </tr>
+          <tr class="total">
+            <td><strong>Total honoraires mise en place</strong></td>
+            <td class="amount"><strong>3 360 € HTVA</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="body" style="margin-top:0.9cqw; font-size:0.95cqw; font-style:italic;">+ Budget média de pré-lancement : <strong>750 €</strong>, versé aux plateformes (hors honoraires).</p>
+      <p class="body" style="margin-top:0.4cqw; font-size:0.85cqw; font-style:italic;">La mise en place couvre la création des 5 campagnes; les 3 campagnes de conversion et de recherche sont activées au lancement du site.</p>
+    </div>
+  </section>
+
+  <!-- 14. Budget - mensuel -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout" style="padding: 4% 6%;">
+      <div class="pageheader">05.<strong>Budget</strong></div>
+      <h2 class="heading" style="margin-top:0.5cqw; font-size:2.8cqw;">Budget mensuel</h2>
+      <table class="budget">
+        <thead>
+          <tr>
+            <th>Poste</th>
+            <th style="text-align:right; width:24%;">Lancement / mois</th>
+            <th style="text-align:right; width:24%;">Croisière / mois</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="line-title">Gestion des campagnes (honoraires)</span><ul class="cell"><li>Tarif par campagne active</li></ul></td>
+            <td class="amount">1 600 €<br><span style="font-weight:500; font-size:0.8cqw;">5 campagnes</span></td>
+            <td class="amount">~1 280 €<br><span style="font-weight:500; font-size:0.8cqw;">~4 campagnes</span></td>
+          </tr>
+          <tr>
+            <td><span class="line-title">Budget média</span><ul class="cell"><li>Versé aux plateformes (Meta, Google)</li></ul></td>
+            <td class="amount">~2 500 €</td>
+            <td class="amount">~2 500 €</td>
+          </tr>
+          <tr class="total">
+            <td><strong>Total par mois</strong></td>
+            <td class="amount"><strong>~4 100 €</strong></td>
+            <td class="amount"><strong>~3 780 €</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="body" style="margin-top:0.9cqw; font-size:0.95cqw; font-style:italic;">Tarif par campagne : 320 € de création + 320 €/mois de gestion (tarif catalogue KickstartWeb). Budgets média : estimations à valider.</p>
+    </div>
+  </section>
+
+  <!-- 15. Vue année 1 -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout" style="padding: 4% 6%;">
+      <div class="pageheader">05.<strong>Budget</strong></div>
+      <h2 class="heading" style="margin-top:0.5cqw; font-size:2.8cqw;">Vue d'ensemble - année 1 (illustrative)</h2>
+      <table class="budget">
+        <thead>
+          <tr>
+            <th>Période</th>
+            <th style="text-align:right;">Honoraires KSW</th>
+            <th style="text-align:right;">Média (plateformes)</th>
+            <th style="text-align:right;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="line-title">Phase 01 - Pré-lancement</span><ul class="cell"><li>Mise en place, une seule fois</li></ul></td><td class="amount">3 360 €</td><td class="amount">750 €</td><td class="amount">4 110 €</td></tr>
+          <tr><td><span class="line-title">Phase 02 - Lancement</span><ul class="cell"><li>3 mois × (1 600 + 2 500 €)</li></ul></td><td class="amount">4 800 €</td><td class="amount">7 500 €</td><td class="amount">12 300 €</td></tr>
+          <tr><td><span class="line-title">Phase 03 - Croisière</span><ul class="cell"><li>9 mois × (~1 280 + 2 500 €)</li></ul></td><td class="amount">~11 520 €</td><td class="amount">~22 500 €</td><td class="amount">~34 020 €</td></tr>
+          <tr class="total"><td><strong>Total année 1</strong></td><td class="amount"><strong>~19 680 €</strong></td><td class="amount"><strong>~30 750 €</strong></td><td class="amount"><strong>~50 430 €</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="objectif-box" style="margin-top:1.2cqw; font-size:1.1cqw; padding:1.2cqw 1.6cqw;">
+        <span class="label">Le modèle s'autofinance :</span> à l'objectif (100 portails × 4 000 € = 400 000 € de CA), le marketing total représente <strong>~12,5 % du CA</strong> en année de lancement, et descend vers <strong>~9 %</strong> en croisière. Norme du secteur : 10 à 15 %.
+      </div>
+      <p class="body" style="margin-top:0.7cqw; font-size:0.85cqw; font-style:italic;">Détail : 12,5 % = 50 430 € (année 1) / 400 000 € de CA cible annuel; 9 % = 3 780 €/mois (croisière) / 40 000 € de CA mensuel à l'objectif (10 ventes × 4 000 €).</p>
+    </div>
+  </section>
+
+  <!-- 17. Modalités -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">05.<strong>Budget</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw;">Modalités de paiement</h2>
+      <div class="twoblock" style="margin-top:1.8cqw;">
+        <div class="blk">
+          <h3 class="subhead">À la signature (mise en place)</h3>
+          <p class="body" style="margin-top:0.6cqw;"><strong>3 360 € HTVA</strong> d'honoraires + provision média de pré-lancement de <strong>750 €</strong>.</p>
+        </div>
+        <div class="blk">
+          <h3 class="subhead">Mensuel (à partir du lancement)</h3>
+          <p class="body" style="margin-top:0.6cqw;">Honoraires de gestion facturés au mois; budget média provisionné mensuellement et versé directement aux plateformes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18. DIVIDER 06 Planning -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">06</div>
+        <div class="section-title">Planning</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19. Calendrier -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout">
+      <div class="pageheader">06.<strong>Planning</strong></div>
+      <h2 class="heading" style="margin-top:1.5cqw; text-align:center;">Calendrier indicatif</h2>
+      <table class="planning">
+        <thead>
+          <tr>
+            <th>Jalon</th>
+            <th style="text-align:right;">Date cible</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Validation stratégie + budget</td><td style="text-align:right;">À convenir</td></tr>
+          <tr><td>Mise en place mesure + pré-lancement (6 sem.)</td><td style="text-align:right;">Oct - Nov 2026</td></tr>
+          <tr><td>Lancement des campagnes (avec le site)</td><td style="text-align:right;">Décembre 2026</td></tr>
+          <tr><td>Phase de test (collecte de données)</td><td style="text-align:right;">Déc 2026 - Fév 2027</td></tr>
+          <tr><td>Bilan stratégique 3 mois (B2C / B2B)</td><td style="text-align:right;">Mars 2027</td></tr>
+          <tr class="total" style="background: var(--cyan);"><td><strong>Régime de croisière</strong></td><td style="text-align:right;"><strong>À partir de mars 2027</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="body" style="margin-top:1.5cqw; font-size:1cqw; font-style:italic;">Le pré-lancement marketing se cale sur la fin du développement du site. Si le build glisse, le calendrier suit.</p>
+    </div>
+  </section>
+
+  <!-- 20. DIVIDER 07 Hypothèses -->
+  <section class="slide" data-bg="right">
+    <div class="canvas">
+      <div class="divider-layout">
+        <div class="section-num">07</div>
+        <div class="section-title">Hypothèses</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 21. Hypothèses & cadrage -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">07.<strong>Hypothèses</strong></div>
+      <h2 class="heading" style="margin-top:1.2cqw;">Cadrage et points à valider</h2>
+      <ul class="body" style="margin-top:1cqw;">
+        <li>Les <strong>budgets média</strong> sont des estimations de marché, à affiner (aucun historique payant à ce jour).</li>
+        <li>Les <strong>tarifs par campagne</strong> (320 € création + 320 €/mois) sont les tarifs catalogue KickstartWeb.</li>
+        <li>Le <strong>pont de mesure hors-ligne</strong> fonctionne via un Google Sheet partagé au lancement; il pourra être relié à l'ERP plus tard si nécessaire.</li>
+        <li>La <strong>production vidéo</strong> (tournage) reste à la charge de Magifer; un montage de notre côté est possible en option, à chiffrer après visionnage.</li>
+        <li>Le <strong>budget média est séparé des honoraires</strong> et versé aux plateformes.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 22. CLOSING -->
+  <section class="slide" data-bg="right">
+    <div class="canvas closing-layout">
+      <div class="closing-title">Merci !</div>
+      <div class="closing-sub">Quelle est la prochaine étape ?</div>
+      <p class="closing-body">Calons ensemble les budgets média et les points ouverts. À votre signal, je prépare la mise en place et nous lançons le pré-lancement dans la foulée du site.</p>
+      <div class="closing-contact">osman@kickstartweb.com - 0488 303 454</div>
+      <div class="closing-brand">KickstartWeb</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-ui">
+  <button id="prev" aria-label="Précédent">‹</button>
+  <span class="nav-counter"><span id="cur">1</span> / <span id="tot">21</span></span>
+  <button id="next" aria-label="Suivant">›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let idx = 0;
+  document.getElementById('tot').textContent = total;
+  function show(i) {
+    idx = (i + total) % total;
+    slides.forEach((s, n) => s.classList.toggle('active', n === idx));
+    document.getElementById('cur').textContent = idx + 1;
+    location.hash = idx + 1;
+  }
+  document.getElementById('next').onclick = () => show(idx + 1);
+  document.getElementById('prev').onclick = () => show(idx - 1);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(idx + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(total - 1);
+  });
+  if (location.hash) {
+    const n = parseInt(location.hash.slice(1));
+    if (!isNaN(n) && n >= 1 && n <= total) show(n - 1);
+  }
+</script>
+</body>
+</html>
