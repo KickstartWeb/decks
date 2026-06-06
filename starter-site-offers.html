@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Nos offres - Starter Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0A1929;
+    --ink-soft: #1a2a3a;
+    --cyan: #E0F4F8;
+    --cyan-soft: #EAF7FA;
+    --gray-num: #D0D4D8;
+    --teal: #3FC5D9;
+    --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: #1a1a1a;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .stage { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .slide {
+    width: min(100vw, 177.78vh);
+    height: min(56.25vw, 100vh);
+    aspect-ratio: 16 / 9;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+    display: none;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+  }
+  .slide.active { display: block; }
+  .slide::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .slide[data-bg="right"]::before { background: var(--cyan); clip-path: path('M 1200 0 L 1920 0 L 1920 1080 L 850 1080 C 1050 720 1100 360 1200 0 Z'); }
+  .slide[data-bg="left"]::before { background: var(--cyan); clip-path: path('M 0 0 L 800 0 C 700 360 750 720 950 1080 L 0 1080 Z'); }
+  .slide[data-bg="left-soft"]::before { background: var(--cyan-soft); clip-path: path('M 0 0 L 600 0 C 500 360 550 720 700 1080 L 0 1080 Z'); }
+  .slide { container-type: size; }
+  .canvas { position: absolute; inset: 0; z-index: 1; padding: 7% 8%; }
+
+  h1.cover-title { font-weight: 900; font-size: 8.5cqw; letter-spacing: -0.04em; line-height: 0.95; color: var(--ink); }
+  .cover-eyebrow { font-weight: 500; font-size: 1.8cqw; color: var(--ink); letter-spacing: -0.01em; }
+  .cover-date { font-weight: 400; font-size: 1.2cqw; color: var(--ink); margin-top: 0.5cqw; }
+  .brand { font-weight: 900; font-size: 1.5cqw; letter-spacing: -0.02em; color: var(--ink); }
+  .pageheader { font-weight: 400; font-size: 1.1cqw; color: var(--ink); }
+  .pageheader strong { font-weight: 800; }
+  h2.heading { font-weight: 900; font-size: 4.2cqw; line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
+  h3.subhead { font-weight: 800; font-size: 2.2cqw; color: var(--ink); letter-spacing: -0.02em; }
+  p.body, ul.body li { font-weight: 400; font-size: 1.3cqw; line-height: 1.45; color: var(--ink); }
+  ul.body { list-style: none; padding: 0; }
+  ul.body li { position: relative; padding-left: 2cqw; margin-bottom: 1.4cqw; }
+  ul.body li::before { content: "•"; position: absolute; left: 0.4cqw; top: 0; font-size: 1.3cqw; color: var(--teal); }
+  strong { font-weight: 800; }
+
+  .cover-layout { display: grid; grid-template-rows: auto 1fr auto; height: 100%; }
+  .cover-top { display: flex; flex-direction: column; }
+  .cover-mid { display: flex; align-items: center; justify-content: center; text-align: center; flex-direction: column; gap: 1.5cqw; }
+  .cover-bot { display: flex; align-items: flex-end; }
+  .cover-sub { font-weight: 500; font-size: 2cqw; color: var(--ink); letter-spacing: -0.01em; }
+
+  .content-layout { display: flex; flex-direction: column; height: 100%; gap: 1.5cqw; }
+
+  /* Pack slide */
+  .pack-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 2cqw; margin-top: 1cqw; }
+  .pack-price { font-weight: 900; font-size: 5.5cqw; color: var(--teal); line-height: 0.9; letter-spacing: -0.03em; white-space: nowrap; }
+  .pack-tagline { font-weight: 800; font-size: 2cqw; color: var(--ink-soft); letter-spacing: -0.02em; margin-top: 0.3cqw; }
+  ul.feat { list-style: none; padding: 0; margin-top: 2cqw; display: grid; grid-template-columns: 1fr 1fr; gap: 0.9cqw 3cqw; }
+  ul.feat li { position: relative; padding-left: 2cqw; font-size: 1.25cqw; line-height: 1.35; font-weight: 500; }
+  ul.feat li::before { content: "✔"; position: absolute; left: 0; top: 0; font-size: 1.1cqw; color: var(--teal); font-weight: 900; }
+  ul.feat li.inherit { font-weight: 800; }
+  .note { font-size: 1cqw; font-style: italic; margin-top: auto; padding-top: 1.5cqw; color: var(--ink-soft); }
+
+  /* Recap table */
+  table.recap { width: 100%; border-collapse: collapse; font-size: 1.3cqw; margin-top: 2cqw; }
+  table.recap th, table.recap td { border: 0.1cqw solid var(--ink); padding: 1cqw 1.4cqw; text-align: left; font-weight: 600; }
+  table.recap th { font-weight: 900; font-size: 1.4cqw; background: var(--cyan); }
+  table.recap td.price { text-align: right; font-weight: 900; color: var(--teal); white-space: nowrap; }
+  table.recap td.name { font-weight: 900; }
+
+  /* Closing */
+  .closing-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; gap: 2cqw; }
+  .closing-title { font-weight: 900; font-size: 8cqw; line-height: 0.95; letter-spacing: -0.03em; }
+  .closing-sub { font-weight: 800; font-size: 3cqw; letter-spacing: -0.02em; }
+  .closing-body { font-style: italic; font-weight: 400; font-size: 1.4cqw; max-width: 60%; line-height: 1.5; }
+  .closing-contact { font-weight: 800; font-size: 1.3cqw; margin-top: 3cqw; }
+  .closing-brand { font-weight: 900; font-size: 2cqw; margin-top: 2cqw; }
+
+  .nav-ui { position: fixed; bottom: 1.5vh; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; align-items: center; z-index: 100; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); padding: 8px 16px; border-radius: 100px; color: #fff; font-size: 12px; font-family: 'Inter', sans-serif; font-weight: 500; }
+  .nav-ui button { background: transparent; border: none; color: #fff; cursor: pointer; font-size: 14px; padding: 4px 8px; border-radius: 4px; }
+  .nav-ui button:hover { background: rgba(255,255,255,0.15); }
+  .nav-counter { min-width: 50px; text-align: center; }
+
+  @media print {
+    @page { size: 1920px 1080px; margin: 0; }
+    html, body { background: white; overflow: visible; height: auto; }
+    .stage { display: block; height: auto; }
+    .slide { display: block !important; page-break-after: always; box-shadow: none; width: 1920px; height: 1080px; aspect-ratio: unset; }
+    .nav-ui { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. COVER -->
+  <section class="slide active" data-bg="right">
+    <div class="canvas cover-layout">
+      <div class="cover-top">
+        <div class="cover-eyebrow">Nos offres</div>
+        <div class="cover-date">Sites professionnels &amp; boutiques en ligne</div>
+      </div>
+      <div class="cover-mid">
+        <h1 class="cover-title">Lance ton<br>activité en ligne</h1>
+        <div class="cover-sub">Un site pro, clé en main, à partir de 449&nbsp;€</div>
+      </div>
+      <div class="cover-bot">
+        <div class="brand">KickstartWeb</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. COMMENT CA MARCHE -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader"><strong>Comment ça marche</strong></div>
+      <h2 class="heading" style="margin-top:1cqw;">Tu n'as rien à préparer.<br>On s'occupe de tout.</h2>
+      <ul class="body" style="margin-top:1.5cqw; max-width:80%;">
+        <li><strong>On rédige ton contenu</strong> - tu n'as pas besoin d'avoir tes textes prêts.</li>
+        <li><strong>On crée ton logo</strong> - 3 propositions au choix.</li>
+        <li><strong>Domaine + adresse mail pro inclus</strong> (1 an).</li>
+        <li><strong>Mise en ligne rapide</strong> - ton site Starter est prêt en 14 jours.</li>
+        <li>4 formules, de la simple présentation jusqu'à la <strong>boutique en ligne complète</strong>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. PACK STARTER SITE -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">Offre 1/4 — <strong>Pack Starter site</strong></div>
+      <div class="pack-top">
+        <div>
+          <h2 class="heading">Pack Starter site</h2>
+          <div class="pack-tagline">Un site pro en 14 jours, même si tu n'as rien de prêt</div>
+        </div>
+        <div class="pack-price">449&nbsp;€</div>
+      </div>
+      <ul class="feat">
+        <li>1 page web sur-mesure (présentation)</li>
+        <li>Nom de domaine personnalisé (1 an inclus)</li>
+        <li>Adresse email pro (ex&nbsp;: contact@tonsite.com)</li>
+        <li>Formulaire de contact relié à ton adresse</li>
+        <li>Choix parmi 3 propositions de logo</li>
+        <li>Rédaction complète du contenu</li>
+        <li>Support email + tutoriels vidéo</li>
+        <li>Évolutif vers site 5 pages</li>
+      </ul>
+      <div class="note">Hébergement + mail sécurisé&nbsp;: 4,99&nbsp;€/mois (ou 9,99&nbsp;€/mois pour 5 adresses).</div>
+    </div>
+  </section>
+
+  <!-- 4. PACK VISIBILITE -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">Offre 2/4 — <strong>Pack Visibilité</strong></div>
+      <div class="pack-top">
+        <div>
+          <h2 class="heading">Pack Visibilité</h2>
+          <div class="pack-tagline">Tout ce qu'il te faut pour un bon référencement local</div>
+        </div>
+        <div class="pack-price">549&nbsp;€</div>
+      </div>
+      <ul class="feat">
+        <li class="inherit">Tout le Pack Starter</li>
+        <li>Création de ta page Google My Business</li>
+        <li>Référencement local (Google Maps optimisé)</li>
+        <li>Installation de Google Analytics</li>
+        <li>Module témoignages clients</li>
+      </ul>
+      <div class="note">Idéal si tes clients te cherchent sur Google et Maps.</div>
+    </div>
+  </section>
+
+  <!-- 5. PACK MARKETING PRO -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">Offre 3/4 — <strong>Pack Marketing pro</strong></div>
+      <div class="pack-top">
+        <div>
+          <h2 class="heading">Pack Marketing pro</h2>
+          <div class="pack-tagline">Je veux des clients, pas juste un site</div>
+        </div>
+        <div class="pack-price">649&nbsp;€</div>
+      </div>
+      <ul class="feat">
+        <li class="inherit">Tout ce qui précède (Starter + Référencement local)</li>
+        <li>Formation vidéo pour faire ta publicité sur Google Ads</li>
+      </ul>
+      <div class="note">Tu repars autonome pour aller chercher tes premiers clients.</div>
+    </div>
+  </section>
+
+  <!-- 6. PACK E-COMMERCE -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader">Offre 4/4 — <strong>Pack E-commerce</strong></div>
+      <div class="pack-top">
+        <div>
+          <h2 class="heading">Pack E-commerce</h2>
+          <div class="pack-tagline">Tu vends des produits&nbsp;? Lance ta boutique en ligne clé en main</div>
+        </div>
+        <div class="pack-price">1&nbsp;549&nbsp;€</div>
+      </div>
+      <ul class="feat">
+        <li>Boutique en ligne complète (WooCommerce)</li>
+        <li>Jusqu'à 30 produits importés et mis en page</li>
+        <li>Paiement en ligne sécurisé (Stripe / PayPal)</li>
+        <li>Configuration des frais de livraison</li>
+        <li>Pages essentielles (Accueil, Contact, CGV)</li>
+        <li>Nom de domaine personnalisé (1 an inclus)</li>
+        <li>Adresse email pro</li>
+        <li>Choix parmi 3 propositions de logo</li>
+        <li>Rédaction complète des fiches produits</li>
+        <li>Formation vidéo pour gérer tes commandes</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. RECAP -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas content-layout">
+      <div class="pageheader"><strong>Récapitulatif</strong></div>
+      <h2 class="heading" style="margin-top:0.5cqw; text-align:center;">Quelle offre est faite pour toi&nbsp;?</h2>
+      <table class="recap">
+        <thead>
+          <tr><th style="width:28%;">Offre</th><th>Pour qui</th><th style="text-align:right;">Prix</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Starter site</td><td>Lancer ta présence en ligne avec un site pro</td><td class="price">449&nbsp;€</td></tr>
+          <tr><td class="name">Visibilité</td><td>Être trouvé par tes clients en local (Google, Maps)</td><td class="price">549&nbsp;€</td></tr>
+          <tr><td class="name">Marketing pro</td><td>Aller chercher activement tes clients (Google Ads)</td><td class="price">649&nbsp;€</td></tr>
+          <tr><td class="name">E-commerce</td><td>Vendre tes produits en ligne, boutique clé en main</td><td class="price">1&nbsp;549&nbsp;€</td></tr>
+        </tbody>
+      </table>
+      <p class="body" style="margin-top:1.5cqw; font-size:1cqw; font-style:italic;">Paiement unique du pack. Hébergement + mail&nbsp;: 4,99&nbsp;€/mois (ou 9,99&nbsp;€/mois pour 5 adresses).</p>
+    </div>
+  </section>
+
+  <!-- 8. CLOSING -->
+  <section class="slide" data-bg="right">
+    <div class="canvas closing-layout">
+      <div class="closing-title">On en parle&nbsp;?</div>
+      <div class="closing-sub">Ta présence en ligne commence ici.</div>
+      <p class="closing-body">Dis-moi où tu en es et ce que tu vends, et je te dis en quelques minutes quelle offre te convient et comment on s'y prend.</p>
+      <div class="closing-contact">osman@kickstartweb.com — 0488 303 454</div>
+      <div class="closing-brand">KickstartWeb</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-ui">
+  <button id="prev" aria-label="Précédent">‹</button>
+  <span class="nav-counter"><span id="cur">1</span> / <span id="tot">8</span></span>
+  <button id="next" aria-label="Suivant">›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let idx = 0;
+  document.getElementById('tot').textContent = total;
+  function show(i) {
+    idx = (i + total) % total;
+    slides.forEach((s, n) => s.classList.toggle('active', n === idx));
+    document.getElementById('cur').textContent = idx + 1;
+    location.hash = idx + 1;
+  }
+  document.getElementById('next').onclick = () => show(idx + 1);
+  document.getElementById('prev').onclick = () => show(idx - 1);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(idx + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(total - 1);
+  });
+  if (location.hash) {
+    const n = parseInt(location.hash.slice(1));
+    if (!isNaN(n) && n >= 1 && n <= total) show(n - 1);
+  }
+</script>
+</body>
+</html>
