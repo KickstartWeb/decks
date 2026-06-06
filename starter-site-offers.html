@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow">
 <title>Nos offres - Starter Site</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,6 +59,7 @@
   ul.body li { position: relative; padding-left: 2cqw; margin-bottom: 1.4cqw; }
   ul.body li::before { content: "•"; position: absolute; left: 0.4cqw; top: 0; font-size: 1.3cqw; color: var(--teal); }
   strong { font-weight: 800; }
+  .title-accent { color: var(--teal); }
 
   .cover-layout { display: grid; grid-template-rows: auto 1fr auto; height: 100%; }
   .cover-top { display: flex; flex-direction: column; }
@@ -77,12 +79,18 @@
   ul.feat li.inherit { font-weight: 800; }
   .note { font-size: 1cqw; font-style: italic; margin-top: auto; padding-top: 1.5cqw; color: var(--ink-soft); }
 
-  /* Recap table */
+  /* Tables (recap + options) */
   table.recap { width: 100%; border-collapse: collapse; font-size: 1.3cqw; margin-top: 2cqw; }
   table.recap th, table.recap td { border: 0.1cqw solid var(--ink); padding: 1cqw 1.4cqw; text-align: left; font-weight: 600; }
   table.recap th { font-weight: 900; font-size: 1.4cqw; background: var(--cyan); }
   table.recap td.price { text-align: right; font-weight: 900; color: var(--teal); white-space: nowrap; }
   table.recap td.name { font-weight: 900; }
+
+  /* About slide */
+  .about-layout { display: grid; grid-template-columns: 0.82fr 1fr; gap: 4cqw; align-items: center; height: 100%; }
+  .about-photo-img { width: 100%; max-height: 80cqh; object-fit: cover; border-radius: 1cqw; box-shadow: 0 0.6cqw 2cqw rgba(0,0,0,0.14); }
+  .about-text h2 { font-weight: 900; font-size: 4.5cqw; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: 1.5cqw; }
+  .about-text p { font-weight: 400; font-size: 1.35cqw; line-height: 1.5; color: var(--ink); margin-bottom: 1.1cqw; }
 
   /* Closing */
   .closing-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; gap: 2cqw; }
@@ -118,7 +126,7 @@
       </div>
       <div class="cover-mid">
         <h1 class="cover-title">Lance ton<br>activité en ligne</h1>
-        <div class="cover-sub">Un site pro, clé en main, à partir de 449&nbsp;€</div>
+        <div class="cover-sub">Un site pro, clé en main, à partir de 499&nbsp;€</div>
       </div>
       <div class="cover-bot">
         <div class="brand">KickstartWeb</div>
@@ -134,9 +142,9 @@
       <ul class="body" style="margin-top:1.5cqw; max-width:80%;">
         <li><strong>On rédige ton contenu</strong> - tu n'as pas besoin d'avoir tes textes prêts.</li>
         <li><strong>On crée ton logo</strong> - 3 propositions au choix.</li>
-        <li><strong>Domaine + adresse mail pro inclus</strong> (1 an).</li>
-        <li><strong>Mise en ligne rapide</strong> - ton site Starter est prêt en 14 jours.</li>
-        <li>4 formules, de la simple présentation jusqu'à la <strong>boutique en ligne complète</strong>.</li>
+        <li><strong>Domaine + adresse mail pro inclus.</strong></li>
+        <li><strong>Mise en ligne rapide</strong> - ton site Starter est prêt en 3 semaines.</li>
+        <li>Des formules de la simple présentation jusqu'à la <strong>boutique en ligne complète</strong>.</li>
       </ul>
     </div>
   </section>
@@ -144,17 +152,17 @@
   <!-- 3. PACK STARTER SITE -->
   <section class="slide" data-bg="left">
     <div class="canvas content-layout">
-      <div class="pageheader">Offre 1/4 — <strong>Pack Starter site</strong></div>
+      <div class="pageheader">Offre 1/3 — <strong>Pack Starter site</strong></div>
       <div class="pack-top">
         <div>
           <h2 class="heading">Pack Starter site</h2>
-          <div class="pack-tagline">Un site pro en 14 jours, même si tu n'as rien de prêt</div>
+          <div class="pack-tagline">Un site pro en 3 semaines, même si tu n'as rien de prêt</div>
         </div>
-        <div class="pack-price">449&nbsp;€</div>
+        <div class="pack-price">499&nbsp;€</div>
       </div>
       <ul class="feat">
         <li>1 page web sur-mesure (présentation)</li>
-        <li>Nom de domaine personnalisé (1 an inclus)</li>
+        <li>Nom de domaine personnalisé</li>
         <li>Adresse email pro (ex&nbsp;: contact@tonsite.com)</li>
         <li>Formulaire de contact relié à ton adresse</li>
         <li>Choix parmi 3 propositions de logo</li>
@@ -169,13 +177,13 @@
   <!-- 4. PACK VISIBILITE -->
   <section class="slide" data-bg="left">
     <div class="canvas content-layout">
-      <div class="pageheader">Offre 2/4 — <strong>Pack Visibilité</strong></div>
+      <div class="pageheader">Offre 2/3 — <strong>Pack Visibilité</strong></div>
       <div class="pack-top">
         <div>
           <h2 class="heading">Pack Visibilité</h2>
           <div class="pack-tagline">Tout ce qu'il te faut pour un bon référencement local</div>
         </div>
-        <div class="pack-price">549&nbsp;€</div>
+        <div class="pack-price">599&nbsp;€</div>
       </div>
       <ul class="feat">
         <li class="inherit">Tout le Pack Starter</li>
@@ -188,35 +196,16 @@
     </div>
   </section>
 
-  <!-- 5. PACK MARKETING PRO -->
+  <!-- 5. PACK E-COMMERCE -->
   <section class="slide" data-bg="left">
     <div class="canvas content-layout">
-      <div class="pageheader">Offre 3/4 — <strong>Pack Marketing pro</strong></div>
-      <div class="pack-top">
-        <div>
-          <h2 class="heading">Pack Marketing pro</h2>
-          <div class="pack-tagline">Je veux des clients, pas juste un site</div>
-        </div>
-        <div class="pack-price">649&nbsp;€</div>
-      </div>
-      <ul class="feat">
-        <li class="inherit">Tout ce qui précède (Starter + Référencement local)</li>
-        <li>Formation vidéo pour faire ta publicité sur Google Ads</li>
-      </ul>
-      <div class="note">Tu repars autonome pour aller chercher tes premiers clients.</div>
-    </div>
-  </section>
-
-  <!-- 6. PACK E-COMMERCE -->
-  <section class="slide" data-bg="left">
-    <div class="canvas content-layout">
-      <div class="pageheader">Offre 4/4 — <strong>Pack E-commerce</strong></div>
+      <div class="pageheader">Offre 3/3 — <strong>Pack E-commerce</strong></div>
       <div class="pack-top">
         <div>
           <h2 class="heading">Pack E-commerce</h2>
           <div class="pack-tagline">Tu vends des produits&nbsp;? Lance ta boutique en ligne clé en main</div>
         </div>
-        <div class="pack-price">1&nbsp;549&nbsp;€</div>
+        <div class="pack-price">1&nbsp;999&nbsp;€</div>
       </div>
       <ul class="feat">
         <li>Boutique en ligne complète (WooCommerce)</li>
@@ -224,12 +213,31 @@
         <li>Paiement en ligne sécurisé (Stripe / PayPal)</li>
         <li>Configuration des frais de livraison</li>
         <li>Pages essentielles (Accueil, Contact, CGV)</li>
-        <li>Nom de domaine personnalisé (1 an inclus)</li>
+        <li>Nom de domaine personnalisé</li>
         <li>Adresse email pro</li>
         <li>Choix parmi 3 propositions de logo</li>
         <li>Rédaction complète des fiches produits</li>
         <li>Formation vidéo pour gérer tes commandes</li>
       </ul>
+    </div>
+  </section>
+
+  <!-- 6. OPTIONS / SUPPLEMENTS -->
+  <section class="slide" data-bg="left">
+    <div class="canvas content-layout">
+      <div class="pageheader"><strong>Options à la carte</strong></div>
+      <h2 class="heading" style="margin-top:0.5cqw;">Personnalise ton pack</h2>
+      <p class="body" style="margin-top:0.5cqw; max-width:75%;">Des modules supplémentaires que tu peux ajouter à n'importe quelle offre.</p>
+      <table class="recap" style="max-width:75%;">
+        <thead>
+          <tr><th>Option</th><th style="text-align:right;">Prix</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Page supplémentaire</td><td class="price">99&nbsp;€</td></tr>
+          <tr><td class="name">Module multi-langue</td><td class="price">99&nbsp;€</td></tr>
+          <tr><td class="name">Module blog</td><td class="price">199&nbsp;€</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -243,17 +251,33 @@
           <tr><th style="width:28%;">Offre</th><th>Pour qui</th><th style="text-align:right;">Prix</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">Starter site</td><td>Lancer ta présence en ligne avec un site pro</td><td class="price">449&nbsp;€</td></tr>
-          <tr><td class="name">Visibilité</td><td>Être trouvé par tes clients en local (Google, Maps)</td><td class="price">549&nbsp;€</td></tr>
-          <tr><td class="name">Marketing pro</td><td>Aller chercher activement tes clients (Google Ads)</td><td class="price">649&nbsp;€</td></tr>
-          <tr><td class="name">E-commerce</td><td>Vendre tes produits en ligne, boutique clé en main</td><td class="price">1&nbsp;549&nbsp;€</td></tr>
+          <tr><td class="name">Starter site</td><td>Lancer ta présence en ligne avec un site pro</td><td class="price">499&nbsp;€</td></tr>
+          <tr><td class="name">Visibilité</td><td>Être trouvé par tes clients en local (Google, Maps)</td><td class="price">599&nbsp;€</td></tr>
+          <tr><td class="name">E-commerce</td><td>Vendre tes produits en ligne, boutique clé en main</td><td class="price">1&nbsp;999&nbsp;€</td></tr>
         </tbody>
       </table>
       <p class="body" style="margin-top:1.5cqw; font-size:1cqw; font-style:italic;">Paiement unique du pack. Hébergement + mail&nbsp;: 4,99&nbsp;€/mois (ou 9,99&nbsp;€/mois pour 5 adresses).</p>
     </div>
   </section>
 
-  <!-- 8. CLOSING -->
+  <!-- 8. QUI SUIS-JE -->
+  <section class="slide" data-bg="left-soft">
+    <div class="canvas">
+      <div class="about-layout">
+        <div class="about-photo">
+          <img class="about-photo-img" src="./about-portrait.jpg" alt="Osman Munir - Créateur de sites web">
+        </div>
+        <div class="about-text">
+          <h2><span class="title-accent">Qui</span> suis-je ?</h2>
+          <p>Je m'appelle Osman. Depuis 7 ans, je crée des sites web pour des entrepreneurs et des indépendants en France, en Belgique et au Luxembourg.</p>
+          <p>J'ai lancé Starter site parce que trop de personnes repoussent leur projet de site, pas par manque d'envie, mais parce qu'elles ne savent pas par où commencer.</p>
+          <p>Ma méthode&nbsp;: on se pose ensemble pendant 1h, et je construis la structure complète de ton site sous tes yeux. Tu repars avec un plan clair, que tu peux utiliser avec moi ou avec quelqu'un d'autre.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. CLOSING -->
   <section class="slide" data-bg="right">
     <div class="canvas closing-layout">
       <div class="closing-title">On en parle&nbsp;?</div>
@@ -268,7 +292,7 @@
 
 <div class="nav-ui">
   <button id="prev" aria-label="Précédent">‹</button>
-  <span class="nav-counter"><span id="cur">1</span> / <span id="tot">8</span></span>
+  <span class="nav-counter"><span id="cur">1</span> / <span id="tot">9</span></span>
   <button id="next" aria-label="Suivant">›</button>
 </div>
 
