@@ -29,19 +29,24 @@
   h2{font-size:40px;line-height:1.12;font-weight:800;color:var(--dark)}
   .em{font-family:var(--serif);font-style:italic;font-weight:700;color:var(--coral)}
   .lead{font-size:22px;color:var(--body);margin-top:26px;max-width:780px;line-height:1.5}
-  .small{font-size:16px;color:var(--muted)}
-  /* hook balance card */
   .balance{margin-top:40px;background:var(--white);border:1px solid rgba(0,0,0,.08);
            border-radius:18px;padding:26px 32px;width:420px;box-shadow:0 10px 30px rgba(9,52,40,.08)}
   .balance .lbl{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
   .balance .amt{font-size:54px;font-weight:800;color:#c0392b;margin:6px 0 2px;font-variant-numeric:tabular-nums}
   .balance .sub{font-size:14px;color:var(--muted)}
-  /* slide header for diagram slides */
   .shead{position:absolute;top:54px;left:110px;right:110px}
   .shead .eyebrow{margin:0}
   .shead h2{margin-top:8px;font-size:34px}
+  /* loop caption panel */
+  #loop-cap{position:absolute;right:96px;top:210px;width:360px;background:var(--white);
+            border:1px solid rgba(0,0,0,.08);border-left:5px solid var(--coral);border-radius:14px;
+            padding:22px 24px;box-shadow:0 10px 30px rgba(9,52,40,.08)}
+  #loop-cap .cn{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:10px}
+  #loop-cap .ct{font-size:19px;line-height:1.45;color:var(--dark);font-weight:500}
+  #loop-cap.hint{border-left-color:var(--muted)}
+  #loop-cap.hint .ct{color:var(--muted);font-weight:400;font-style:italic}
   /* exits */
-  .groups{display:flex;gap:34px;margin-top:18px;align-items:stretch}
+  .groups{display:flex;gap:34px;align-items:stretch}
   .grp{flex:1;background:var(--white);border:1px solid rgba(0,0,0,.07);border-radius:18px;padding:26px 28px}
   .grp.found{border-top:5px solid var(--coral)}
   .grp.strat{border-top:5px solid var(--primary)}
@@ -54,17 +59,18 @@
   .exit .x .t{font-size:18px;font-weight:700;color:var(--dark)}
   .exit .x .d{font-size:14px;color:var(--muted);margin-top:2px}
   /* order flow */
-  .flow{display:flex;align-items:center;gap:16px;margin-top:14px;flex-wrap:wrap}
+  .flow{display:flex;align-items:center;gap:16px}
   .step{background:var(--white);border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:16px 18px;
         min-width:150px;text-align:center}
   .step .n{font-size:12px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
   .step .s{font-size:17px;font-weight:700;color:var(--dark);margin-top:4px}
   .step.found{border:2px solid var(--coral);background:var(--coral-soft)}
   .arrow{color:var(--coral);font-size:26px;font-weight:800}
-  .divider{display:flex;flex-direction:column;align-items:center;color:var(--muted);font-size:12px;
-           letter-spacing:1px;text-transform:uppercase}
-  .callout{margin-top:34px;background:var(--primary);color:#fff;border-radius:16px;padding:22px 28px;max-width:840px}
-  .callout .q{font-family:var(--serif);font-style:italic;font-size:26px;line-height:1.3}
+  .fundband{background:var(--coral-soft);border:1px dashed var(--coral);border-radius:12px;
+            padding:13px 18px;color:#b9551f;font-weight:700;font-size:16px;text-align:center}
+  .parallel-lbl{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:10px 0 6px}
+  .callout{margin-top:34px;background:var(--primary);color:#fff;border-radius:16px;padding:22px 28px;max-width:900px}
+  .callout .q{font-family:var(--serif);font-style:italic;font-size:25px;line-height:1.3}
   .callout .a{font-size:15px;color:#cfe3da;margin-top:8px}
   /* cta */
   .cta-list{margin-top:24px;list-style:none}
@@ -72,8 +78,7 @@
   .dot{width:11px;height:11px;border-radius:50%;background:var(--coral);flex:none}
   .pill{margin-top:34px;display:inline-flex;align-items:center;gap:10px;background:var(--coral);color:#fff;
         font-weight:700;font-size:18px;padding:14px 28px;border-radius:50px}
-  /* nav */
-  #nav{position:fixed;bottom:16px;right:20px;color:#9aa4b2;font-size:13px;font-family:var(--sans);z-index:5}
+  #nav{position:fixed;bottom:16px;right:20px;color:#9aa4b2;font-size:13px;z-index:5}
   #hint{position:fixed;bottom:16px;left:20px;color:#6b7280;font-size:12px;z-index:5}
   svg text{font-family:var(--sans)}
 </style>
@@ -99,10 +104,11 @@
     <p class="lead">The same hole, a different month. Once you see the loop, you can break it.</p>
   </section>
 
-  <!-- 3 THE LOOP (SVG built by JS) -->
-  <section class="slide">
+  <!-- 3 THE LOOP (walkthrough, 8 substeps) -->
+  <section class="slide" data-steps="8">
     <div class="shead"><div class="eyebrow">The trap</div><h2>The vicious circle of freelancing</h2></div>
     <svg id="ring" viewBox="0 0 1280 720" style="width:100%;height:100%"></svg>
+    <div id="loop-cap" class="hint"><div class="ct">Press → to walk through the loop, one step at a time.</div></div>
   </section>
 
   <!-- 4 TURN -->
@@ -116,9 +122,9 @@
     <div class="shead"><div class="eyebrow">The way out</div><h2>5 ways out of the loop</h2></div>
     <div class="groups" style="margin-top:120px">
       <div class="grp found">
-        <div class="gt">Foundations · non-negotiable</div>
-        <div class="exit"><div class="badge">1</div><div class="x"><div class="t">Financial audit</div><div class="d">Know your numbers, cut the waste</div></div></div>
-        <div class="exit"><div class="badge">2</div><div class="x"><div class="t">Security fund</div><div class="d">6 months of spending = runway to say no</div></div></div>
+        <div class="gt">Foundations</div>
+        <div class="exit"><div class="badge">1</div><div class="x"><div class="t">Financial audit</div><div class="d">Know your numbers, cut the waste. Do this first.</div></div></div>
+        <div class="exit"><div class="badge">2</div><div class="x"><div class="t">Security fund</div><div class="d">Start it now and grow it over time, up to 6 months of runway.</div></div></div>
       </div>
       <div class="grp strat">
         <div class="gt">Strategic</div>
@@ -132,20 +138,26 @@
   <!-- 6 THE ORDER -->
   <section class="slide">
     <div class="shead"><div class="eyebrow">The payoff</div><h2>The order is the secret</h2></div>
-    <div class="flow" style="margin-top:120px">
-      <div class="step found"><div class="n">Foundation</div><div class="s">1 · Audit</div></div>
-      <div class="arrow">→</div>
-      <div class="step found"><div class="n">Foundation</div><div class="s">2 · Security fund</div></div>
-      <div class="divider"><span style="font-size:22px;color:var(--coral)">‖</span><span>then</span></div>
-      <div class="step"><div class="n">Strategic</div><div class="s">3 · Offer</div></div>
-      <div class="arrow">→</div>
-      <div class="step"><div class="n">Strategic</div><div class="s">4 · Positioning</div></div>
-      <div class="arrow">→</div>
-      <div class="step"><div class="n">Strategic</div><div class="s">5 · Acquisition</div></div>
+    <div style="margin-top:120px">
+      <div class="flow">
+        <div class="step found"><div class="n">Do this first</div><div class="s">1 · Audit</div></div>
+        <div class="arrow">→</div>
+        <div style="flex:1">
+          <div class="fundband">2 · Security fund — start now, and grow it over time  ▸▸▸</div>
+          <div class="parallel-lbl">then, in parallel, once the audit is done:</div>
+          <div class="flow">
+            <div class="step"><div class="n">Strategic</div><div class="s">3 · Offer</div></div>
+            <div class="arrow">→</div>
+            <div class="step"><div class="n">Strategic</div><div class="s">4 · Positioning</div></div>
+            <div class="arrow">→</div>
+            <div class="step"><div class="n">Strategic</div><div class="s">5 · Acquisition</div></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="callout">
       <div class="q">"You can't fix your positioning while you're drowning."</div>
-      <div class="a">The audit and the fund buy you breathing room first. Then the strategic work actually sticks.</div>
+      <div class="a">Fix your spending first. Then start your safety fund and keep it growing while you build the strategic side.</div>
     </div>
   </section>
 
@@ -163,94 +175,117 @@
 
 </div></div>
 
-<div id="hint">← → to navigate</div>
+<div id="hint">← → to navigate · the loop slide walks step by step</div>
 <div id="nav"><span id="cur">1</span> / <span id="tot">7</span></div>
 
 <script>
 /* ---- vicious circle ring ---- */
+const NS="http://www.w3.org/2000/svg";
+const labels=[
+  ["Wrong-fit client","(word of mouth)"],
+  ["You don't know","this avatar"],
+  ["Custom","project"],
+  ["You underestimate","the work"],
+  ["Lose money,","run late"],
+  ["No time for","positioning"],
+  ["Tight on cash"],
+  ["Say yes to the","next wrong client"],
+];
+const captions=[
+  "It starts with a wrong-fit client - usually word of mouth. You didn't choose them; they just landed in your inbox.",
+  "You don't really know this type of client - you never defined who you serve. But you're tempted, because you never know when the next income will come.",
+  "So you build a custom project - something you've never done in exactly this way before.",
+  "Because it's custom, you can't see the hidden work. You underestimate how long it takes.",
+  "You blow past your estimate. You lose money on the project, and you run late for the next one.",
+  "Running late, you never get the time to step back and fix your positioning.",
+  "Having lost money, you're now tight on cash. The pressure quietly builds.",
+  "So when the next wrong-fit client shows up, you say yes again - because you still don't know when the next income will come. The loop closes.",
+];
+const cx=430, cy=384, R=182, nodeR=21;
 (function(){
-  const steps=[
-    ["Wrong-fit client","(word of mouth)"],
-    ["You don't know","this avatar"],
-    ["You build a","custom project"],
-    ["You underestimate","the work"],
-    ["You lose money","+ run late"],
-    ["No time to fix","your positioning"],
-    ["You're tight","on cash"],
-    ["You say yes to the","next wrong client"],
-  ];
-  const cx=640, cy=388, R=196, nodeR=23, NS="http://www.w3.org/2000/svg";
   const svg=document.getElementById("ring");
-  // marker
   svg.innerHTML=`<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#EB7D41"/></marker></defs>`;
-  // base ring
   const base=document.createElementNS(NS,"circle");
   base.setAttribute("cx",cx);base.setAttribute("cy",cy);base.setAttribute("r",R);
   base.setAttribute("fill","none");base.setAttribute("stroke","#E2DCD5");base.setAttribute("stroke-width","2");
   svg.appendChild(base);
-  const n=steps.length, gap=11*Math.PI/180;
+  const n=labels.length, gap=11*Math.PI/180;
   const ang=i=>(-90+i*(360/n))*Math.PI/180;
   const pt=(a,r)=>[cx+r*Math.cos(a), cy+r*Math.sin(a)];
-  // arcs between nodes (clockwise)
   for(let i=0;i<n;i++){
-    const a0=ang(i)+gap, a1=ang((i+1)%n)-gap;
-    let a1c=a1; if(a1c<a0)a1c+=2*Math.PI;
-    const [x0,y0]=pt(a0,R),[x1,y1]=pt(a1c,R);
+    const a0=ang(i)+gap; let a1=ang((i+1)%n)-gap; if(a1<a0)a1+=2*Math.PI;
+    const [x0,y0]=pt(a0,R),[x1,y1]=pt(a1,R);
     const p=document.createElementNS(NS,"path");
     p.setAttribute("d",`M ${x0.toFixed(1)} ${y0.toFixed(1)} A ${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`);
     p.setAttribute("fill","none");p.setAttribute("stroke","#EB7D41");p.setAttribute("stroke-width","2.5");
-    p.setAttribute("marker-end","url(#ah)");
-    svg.appendChild(p);
+    p.setAttribute("marker-end","url(#ah)");svg.appendChild(p);
   }
-  // center label
   const ct=document.createElementNS(NS,"text");
-  ct.setAttribute("x",cx);ct.setAttribute("y",cy-6);ct.setAttribute("text-anchor","middle");
-  ct.setAttribute("font-size","46");ct.setAttribute("fill","#EB7D41");ct.setAttribute("font-weight","800");
-  ct.textContent="↻"; svg.appendChild(ct);
+  ct.setAttribute("x",cx);ct.setAttribute("y",cy-4);ct.setAttribute("text-anchor","middle");
+  ct.setAttribute("font-size","44");ct.setAttribute("fill","#EB7D41");ct.setAttribute("font-weight","800");
+  ct.textContent="↻";svg.appendChild(ct);
   const ct2=document.createElementNS(NS,"text");
-  ct2.setAttribute("x",cx);ct2.setAttribute("y",cy+26);ct2.setAttribute("text-anchor","middle");
-  ct2.setAttribute("font-size","15");ct2.setAttribute("fill","#6B6B7B");ct2.setAttribute("letter-spacing","2");
-  ct2.textContent="AND ROUND AGAIN"; svg.appendChild(ct2);
-  // nodes + labels
+  ct2.setAttribute("x",cx);ct2.setAttribute("y",cy+24);ct2.setAttribute("text-anchor","middle");
+  ct2.setAttribute("font-size","14");ct2.setAttribute("fill","#6B6B7B");ct2.setAttribute("letter-spacing","2");
+  ct2.textContent="AND ROUND AGAIN";svg.appendChild(ct2);
   for(let i=0;i<n;i++){
     const a=ang(i);const [nx,ny]=pt(a,R);
     const c=document.createElementNS(NS,"circle");
+    c.setAttribute("id","node-"+(i+1));
     c.setAttribute("cx",nx);c.setAttribute("cy",ny);c.setAttribute("r",nodeR);
-    c.setAttribute("fill","#0B4132");svg.appendChild(c);
+    c.setAttribute("fill","#0B4132");c.setAttribute("style","transition:all .15s");svg.appendChild(c);
     const num=document.createElementNS(NS,"text");
     num.setAttribute("x",nx);num.setAttribute("y",ny+6);num.setAttribute("text-anchor","middle");
-    num.setAttribute("font-size","18");num.setAttribute("fill","#fff");num.setAttribute("font-weight","700");
+    num.setAttribute("font-size","17");num.setAttribute("fill","#fff");num.setAttribute("font-weight","700");
     num.textContent=(i+1);svg.appendChild(num);
-    // label
-    const [lx,ly]=pt(a,R+44);
-    const cos=Math.cos(a);
+    const [lx,ly]=pt(a,R+42);const cos=Math.cos(a);
     const anchor=cos>0.35?"start":cos<-0.35?"end":"middle";
     const t=document.createElementNS(NS,"text");
     t.setAttribute("x",lx);t.setAttribute("y",ly);t.setAttribute("text-anchor",anchor);
-    t.setAttribute("font-size","17");t.setAttribute("fill","#093428");t.setAttribute("font-weight","600");
-    steps[i].forEach((line,k)=>{
+    t.setAttribute("font-size","16");t.setAttribute("fill","#093428");t.setAttribute("font-weight","600");
+    labels[i].forEach((line,k)=>{
       const ts=document.createElementNS(NS,"tspan");
-      ts.setAttribute("x",lx);ts.setAttribute("dy",k===0?(steps[i].length>1?"-2":"5"):"19");
+      ts.setAttribute("x",lx);ts.setAttribute("dy",k===0?(labels[i].length>1?"-2":"5"):"18");
       ts.textContent=line;t.appendChild(ts);
     });
     svg.appendChild(t);
   }
 })();
+function highlightStep(k){
+  for(let i=1;i<=labels.length;i++){
+    const node=document.getElementById("node-"+i);
+    if(!node)continue;
+    if(i===k){node.setAttribute("fill","#EB7D41");node.setAttribute("r",nodeR+4);}
+    else{node.setAttribute("fill","#0B4132");node.setAttribute("r",nodeR);}
+  }
+  const cap=document.getElementById("loop-cap");
+  if(k>=1){cap.classList.remove("hint");
+    cap.innerHTML=`<div class="cn">Step ${k} of ${labels.length}</div><div class="ct">${captions[k-1]}</div>`;}
+  else{cap.classList.add("hint");
+    cap.innerHTML=`<div class="ct">Press → to walk through the loop, one step at a time.</div>`;}
+}
 
-/* ---- deck nav + scaling ---- */
+/* ---- deck nav + scaling (with per-slide substeps) ---- */
 const slides=[...document.querySelectorAll(".slide")];
-let cur=0; document.getElementById("tot").textContent=slides.length;
-function show(i){cur=Math.max(0,Math.min(slides.length-1,i));
+let cur=0, step=0;
+document.getElementById("tot").textContent=slides.length;
+const maxStep=i=>parseInt(slides[i].dataset.steps||"0",10);
+function render(){
   slides.forEach((s,k)=>s.classList.toggle("active",k===cur));
-  document.getElementById("cur").textContent=cur+1;}
+  document.getElementById("cur").textContent=cur+1;
+  if(slides[cur].id==="ring"||slides[cur].querySelector("#ring")){highlightStep(step);}
+}
+function next(){ if(step<maxStep(cur)){step++;} else if(cur<slides.length-1){cur++;step=0;} render(); }
+function prev(){ if(step>0){step--;} else if(cur>0){cur--;step=maxStep(cur);} render(); }
 function scale(){const s=Math.min(innerWidth/1280,innerHeight/720);
   document.getElementById("stage").style.transform=`scale(${s})`;}
-addEventListener("resize",scale);scale();
+addEventListener("resize",scale);scale();render();
 addEventListener("keydown",e=>{
-  if(["ArrowRight","ArrowDown"," ","PageDown"].includes(e.key)){show(cur+1);e.preventDefault();}
-  if(["ArrowLeft","ArrowUp","PageUp"].includes(e.key)){show(cur-1);e.preventDefault();}
-  if(e.key==="Home")show(0); if(e.key==="End")show(slides.length-1);});
-addEventListener("click",e=>{if(e.clientX<innerWidth*0.25)show(cur-1);else show(cur+1);});
+  if(["ArrowRight","ArrowDown"," ","PageDown"].includes(e.key)){next();e.preventDefault();}
+  if(["ArrowLeft","ArrowUp","PageUp"].includes(e.key)){prev();e.preventDefault();}
+  if(e.key==="Home"){cur=0;step=0;render();}
+  if(e.key==="End"){cur=slides.length-1;step=0;render();}});
+addEventListener("click",e=>{if(e.clientX<innerWidth*0.25)prev();else next();});
 </script>
 </body>
 </html>
