@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Meridian Bank - Account Statement</title>
+<style>
+  :root{
+    --ink:#1b2330; --muted:#6b7686; --line:#e7ebf1; --bg:#f4f6f9;
+    --brand:#1f6feb; --brand-dark:#13407f; --out:#c0392b; --in:#1e8e4e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       color:var(--ink);background:var(--bg);padding:32px;line-height:1.45}
+  .sheet{max-width:920px;margin:0 auto;background:#fff;border:1px solid var(--line);
+         border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(20,40,80,.06)}
+  header{display:flex;justify-content:space-between;align-items:flex-start;
+         padding:28px 36px;border-bottom:3px solid var(--brand)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:40px;height:40px;border-radius:9px;
+        background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+        display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px}
+  .brand h1{font-size:20px;letter-spacing:.5px}
+  .brand p{font-size:12px;color:var(--muted)}
+  .docmeta{text-align:right;font-size:13px;color:var(--muted)}
+  .docmeta strong{color:var(--ink)}
+  .info{display:flex;justify-content:space-between;gap:24px;padding:22px 36px;background:#fafbfd;
+        border-bottom:1px solid var(--line);font-size:13px}
+  .info .col p{margin:2px 0}
+  .info .lbl{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+  .toolbar{display:flex;gap:10px;padding:16px 36px;border-bottom:1px solid var(--line)}
+  button{font:inherit;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--line);
+         background:#fff;color:var(--ink);padding:9px 16px;border-radius:8px}
+  button.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  button:hover{filter:brightness(.97)}
+  .month{padding:8px 36px 0}
+  .month h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--brand-dark);
+            margin:18px 0 8px;font-weight:700}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;
+           letter-spacing:.5px;padding:8px 10px;border-bottom:1px solid var(--line)}
+  th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+  tbody td{padding:9px 10px;border-bottom:1px solid #f1f4f8}
+  tbody tr:hover{background:#fafbfd}
+  .date{color:var(--muted);white-space:nowrap}
+  .desc{font-weight:500}
+  .out{color:var(--out)}
+  .in{color:var(--in);font-weight:600}
+  .bal{color:var(--ink);font-weight:600}
+  .summary{display:flex;gap:30px;padding:22px 36px;margin-top:8px;background:#fafbfd;
+           border-top:1px solid var(--line);font-size:13px}
+  .summary .s .lbl{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+  .summary .s .val{font-size:18px;font-weight:700;margin-top:2px}
+  footer{padding:16px 36px;color:#9aa4b2;font-size:11px;border-top:1px solid var(--line)}
+  @media print{body{background:#fff;padding:0}.toolbar{display:none}.sheet{box-shadow:none;border:none}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <div class="brand">
+      <div class="logo">M</div>
+      <div><h1>MERIDIAN BANK</h1><p>Business Current Account</p></div>
+    </div>
+    <div class="docmeta">
+      <p><strong>Account Statement</strong></p>
+      <p>Period: 01 Mar 2026 - 31 May 2026</p>
+      <p>Issued: 01 Jun 2026</p>
+    </div>
+  </header>
+
+  <div class="info">
+    <div class="col">
+      <p class="lbl">Account holder</p>
+      <p><strong>ALEX MARTIN</strong></p>
+      <p>Freelance Web Designer</p>
+    </div>
+    <div class="col">
+      <p class="lbl">Account</p>
+      <p>IBAN BE•• •••• •••• 4821</p>
+      <p>Debit card ending 4821</p>
+    </div>
+    <div class="col">
+      <p class="lbl">Opening balance (01 Mar)</p>
+      <p><strong>€2,800.00</strong></p>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="primary" onclick="downloadCSV()">⬇ Download CSV</button>
+    <button onclick="window.print()">🖨 Print / Save PDF</button>
+  </div>
+
+  <div id="statement"></div>
+
+  <div class="summary">
+    <div class="s"><div class="lbl">Total money in</div><div class="val in" id="totIn"></div></div>
+    <div class="s"><div class="lbl">Total money out</div><div class="val out" id="totOut"></div></div>
+    <div class="s"><div class="lbl">Closing balance (31 May)</div><div class="val bal" id="closing"></div></div>
+  </div>
+
+  <footer>Sample statement generated for demonstration purposes. Meridian Bank is a fictional institution; all transactions and names are invented.</footer>
+</div>
+
+<script>
+const OPENING = 2800.00;
+const months = [
+  {y:2026, m:3, name:"March 2026"},
+  {y:2026, m:4, name:"April 2026"},
+  {y:2026, m:5, name:"May 2026"},
+];
+// Recurring charges - same merchant every month (this is what "recurring" detection finds)
+const recurring = [
+  {day:1,  desc:"FITPLUS GYM MEMBERSHIP",        out:44.90},
+  {day:3,  desc:"ACCOUNTABLE ACCOUNTING SAAS",   out:25.00},
+  {day:5,  desc:"OVH WEB HOSTING",               out:29.00},
+  {day:6,  desc:"ORANGE MOBILE",                 out:25.00},
+  {day:8,  desc:"DROPBOX PLUS",                  out:11.99},
+  {day:8,  desc:"GOOGLE ONE 200GB STORAGE",      out:9.99},
+  {day:12, desc:"ADOBE CREATIVE CLOUD",          out:59.99},
+  {day:15, desc:"CANVA PRO",                     out:11.99},
+  {day:18, desc:"NETFLIX",                       out:13.49},
+  {day:20, desc:"CLICKUP BUSINESS PLAN",         out:15.00},
+  {day:22, desc:"SPOTIFY PREMIUM",               out:10.99},
+  {day:25, desc:"LINKEDIN PREMIUM CAREER",       out:29.99},
+  {day:28, desc:"CLOUDTOOLS.IO SUBSCRIPTION",    out:19.00},
+];
+// One-off / variable transactions per month
+const noise = {
+  3:[
+    {day:2,  desc:"CARREFOUR MARKET",            out:64.30},
+    {day:9,  desc:"SHELL FUEL STATION",          out:55.00},
+    {day:14, desc:"INVOICE PMT - DUPONT SARL",   in:2400.00},
+    {day:16, desc:"LE PAIN QUOTIDIEN",           out:18.50},
+    {day:21, desc:"AMAZON.FR",                   out:42.99},
+    {day:24, desc:"DELHAIZE SUPERMARKET",        out:78.20},
+    {day:27, desc:"ATM CASH WITHDRAWAL",         out:100.00},
+  ],
+  4:[
+    {day:4,  desc:"CARREFOUR MARKET",            out:71.10},
+    {day:10, desc:"INVOICE PMT - LEROY & CIE",   in:1800.00},
+    {day:11, desc:"TOTALENERGIES FUEL",          out:60.40},
+    {day:17, desc:"RESTAURANT LE BISTROT",       out:54.00},
+    {day:19, desc:"APPLE STORE",                 out:29.00},
+    {day:23, desc:"DELHAIZE SUPERMARKET",        out:66.75},
+    {day:26, desc:"INVOICE PMT - DUPONT SARL",   in:2400.00},
+  ],
+  5:[
+    {day:3,  desc:"CARREFOUR MARKET",            out:59.90},
+    {day:9,  desc:"SHELL FUEL STATION",          out:57.30},
+    {day:13, desc:"INVOICE PMT - MARTIN DESIGN CO", in:1500.00},
+    {day:15, desc:"COWORKING DAY PASS - FOSBURY",out:24.00},
+    {day:18, desc:"AMAZON.FR",                   out:35.50},
+    {day:22, desc:"SUSHI BAR TOKYO",             out:48.00},
+    {day:24, desc:"INVOICE PMT - LEROY & CIE",   in:1800.00},
+    {day:29, desc:"DELHAIZE SUPERMARKET",        out:82.40},
+  ],
+};
+
+const pad=n=>String(n).padStart(2,"0");
+const eur=n=>"€"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const monthAbbr=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+let balance = OPENING, totIn=0, totOut=0;
+const csvRows=[["Date","Description","Money out (EUR)","Money in (EUR)","Balance (EUR)"]];
+const container=document.getElementById("statement");
+
+months.forEach(mo=>{
+  const rows=[...recurring, ...(noise[mo.m]||[])].sort((a,b)=>a.day-b.day);
+  const sec=document.createElement("div"); sec.className="month";
+  let html=`<h2>${mo.name}</h2><table><thead><tr>
+      <th>Date</th><th>Description</th><th class="num">Money out</th>
+      <th class="num">Money in</th><th class="num">Balance</th></tr></thead><tbody>`;
+  rows.forEach(t=>{
+    const out=t.out||0, inc=t.in||0;
+    balance += inc - out; totIn+=inc; totOut+=out;
+    const dateStr=`${pad(t.day)} ${monthAbbr[mo.m]} ${mo.y}`;
+    html+=`<tr>
+      <td class="date">${dateStr}</td>
+      <td class="desc">${t.desc}</td>
+      <td class="num out">${out?("-"+eur(out)):""}</td>
+      <td class="num in">${inc?("+"+eur(inc)):""}</td>
+      <td class="num bal">${eur(balance)}</td></tr>`;
+    csvRows.push([dateStr, t.desc, out?out.toFixed(2):"", inc?inc.toFixed(2):"", balance.toFixed(2)]);
+  });
+  html+="</tbody></table>";
+  sec.innerHTML=html; container.appendChild(sec);
+});
+
+document.getElementById("totIn").textContent="+"+eur(totIn);
+document.getElementById("totOut").textContent="-"+eur(totOut);
+document.getElementById("closing").textContent=eur(balance);
+
+function downloadCSV(){
+  const csv=csvRows.map(r=>r.map(c=>{
+    const s=String(c); return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;
+  }).join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="meridian-bank-statement-mar-may-2026.csv";
+  a.click(); URL.revokeObjectURL(a.href);
+}
+</script>
+</body>
+</html>
