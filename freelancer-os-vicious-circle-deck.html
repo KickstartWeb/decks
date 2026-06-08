@@ -10,9 +10,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream:#F5F1EC; --card:#FBF8F3; --white:#fff;
-    --dark:#111111; --body:#2B2B2B; --muted:#6B6B7B;
-    --primary:#041510; --coral:#E76118; --coral-soft:#F9E3D3; --yellow:#F5B731;
+    --cream:#F6F6F4; --card:#EDE8E3; --white:#fff;
+    --dark:#093428; --body:#3D3D4E; --muted:#6B6B7B;
+    --primary:#0B4132; --coral:#EB7D41; --coral-soft:#FDE8DF; --yellow:#F5B731;
     --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     --serif:"Playfair Display",Georgia,serif;
   }
@@ -67,7 +67,7 @@
   .step.found{border:2px solid var(--coral);background:var(--coral-soft)}
   .arrow{color:var(--coral);font-size:26px;font-weight:800}
   .fundband{background:var(--coral-soft);border:1px dashed var(--coral);border-radius:12px;
-            padding:13px 18px;color:#B24A12;font-weight:700;font-size:16px;text-align:center}
+            padding:13px 18px;color:#b9551f;font-weight:700;font-size:16px;text-align:center}
   .parallel-lbl{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:10px 0 6px}
   .callout{margin-top:34px;background:var(--primary);color:#fff;border-radius:16px;padding:22px 28px;max-width:900px}
   .callout .q{font-family:var(--serif);font-style:italic;font-size:25px;line-height:1.3}
@@ -254,10 +254,10 @@ const captions=[
 const cx=430, cy=384, R=182, nodeR=21;
 (function(){
   const svg=document.getElementById("ring");
-  svg.innerHTML=`<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#E76118"/></marker></defs>`;
+  svg.innerHTML=`<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#EB7D41"/></marker></defs>`;
   const base=document.createElementNS(NS,"circle");
   base.setAttribute("cx",cx);base.setAttribute("cy",cy);base.setAttribute("r",R);
-  base.setAttribute("fill","none");base.setAttribute("stroke","#E3D9C9");base.setAttribute("stroke-width","2");
+  base.setAttribute("fill","none");base.setAttribute("stroke","#E2DCD5");base.setAttribute("stroke-width","2");
   svg.appendChild(base);
   const n=labels.length, gap=11*Math.PI/180;
   const ang=i=>(-90+i*(360/n))*Math.PI/180;
@@ -267,12 +267,12 @@ const cx=430, cy=384, R=182, nodeR=21;
     const [x0,y0]=pt(a0,R),[x1,y1]=pt(a1,R);
     const p=document.createElementNS(NS,"path");
     p.setAttribute("d",`M ${x0.toFixed(1)} ${y0.toFixed(1)} A ${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`);
-    p.setAttribute("fill","none");p.setAttribute("stroke","#E76118");p.setAttribute("stroke-width","2.5");
+    p.setAttribute("fill","none");p.setAttribute("stroke","#EB7D41");p.setAttribute("stroke-width","2.5");
     p.setAttribute("marker-end","url(#ah)");svg.appendChild(p);
   }
   const ct=document.createElementNS(NS,"text");
   ct.setAttribute("x",cx);ct.setAttribute("y",cy-4);ct.setAttribute("text-anchor","middle");
-  ct.setAttribute("font-size","44");ct.setAttribute("fill","#E76118");ct.setAttribute("font-weight","800");
+  ct.setAttribute("font-size","44");ct.setAttribute("fill","#EB7D41");ct.setAttribute("font-weight","800");
   ct.textContent="↻";svg.appendChild(ct);
   const ct2=document.createElementNS(NS,"text");
   ct2.setAttribute("x",cx);ct2.setAttribute("y",cy+24);ct2.setAttribute("text-anchor","middle");
@@ -283,7 +283,7 @@ const cx=430, cy=384, R=182, nodeR=21;
     const c=document.createElementNS(NS,"circle");
     c.setAttribute("id","node-"+(i+1));
     c.setAttribute("cx",nx);c.setAttribute("cy",ny);c.setAttribute("r",nodeR);
-    c.setAttribute("fill","#041510");c.setAttribute("style","transition:all .15s");svg.appendChild(c);
+    c.setAttribute("fill","#0B4132");c.setAttribute("style","transition:all .15s");svg.appendChild(c);
     const num=document.createElementNS(NS,"text");
     num.setAttribute("x",nx);num.setAttribute("y",ny+6);num.setAttribute("text-anchor","middle");
     num.setAttribute("font-size","17");num.setAttribute("fill","#fff");num.setAttribute("font-weight","700");
@@ -292,7 +292,7 @@ const cx=430, cy=384, R=182, nodeR=21;
     const anchor=cos>0.35?"start":cos<-0.35?"end":"middle";
     const t=document.createElementNS(NS,"text");
     t.setAttribute("x",lx);t.setAttribute("y",ly);t.setAttribute("text-anchor",anchor);
-    t.setAttribute("font-size","16");t.setAttribute("fill","#111111");t.setAttribute("font-weight","600");
+    t.setAttribute("font-size","16");t.setAttribute("fill","#093428");t.setAttribute("font-weight","600");
     labels[i].forEach((line,k)=>{
       const ts=document.createElementNS(NS,"tspan");
       ts.setAttribute("x",lx);ts.setAttribute("dy",k===0?(labels[i].length>1?"-2":"5"):"18");
@@ -305,8 +305,8 @@ function highlightStep(k){
   for(let i=1;i<=labels.length;i++){
     const node=document.getElementById("node-"+i);
     if(!node)continue;
-    if(i===k){node.setAttribute("fill","#E76118");node.setAttribute("r",nodeR+4);}
-    else{node.setAttribute("fill","#041510");node.setAttribute("r",nodeR);}
+    if(i===k){node.setAttribute("fill","#EB7D41");node.setAttribute("r",nodeR+4);}
+    else{node.setAttribute("fill","#0B4132");node.setAttribute("r",nodeR);}
   }
   const cap=document.getElementById("loop-cap");
   if(k>=1){cap.classList.remove("hint");
