@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<title>Asset - The Loop</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#ffffff;font-family:"Inter",sans-serif}
+  #wrap{width:1200px;height:840px}
+  svg text{font-family:"Inter",sans-serif}
+  .note{position:fixed;top:12px;left:0;right:0;text-align:center;color:#bbb;font-size:13px}
+</style></head>
+<body>
+<div class="note">Asset: the vicious-circle loop. Use DevTools → "Capture node screenshot" on the &lt;svg&gt; for a transparent cut, or screenshot it.</div>
+<div id="wrap"><svg id="ring" viewBox="0 0 1200 840" style="width:100%;height:100%"></svg></div>
+<script>
+const NS="http://www.w3.org/2000/svg";
+const labels=[
+  ["Wrong-fit client","(word of mouth)"],
+  ["You don't know","this avatar"],
+  ["Custom","project"],
+  ["You underestimate","the work"],
+  ["Lose money,","run late"],
+  ["No time for","positioning"],
+  ["Tight on cash"],
+  ["Say yes to the","next wrong client"],
+];
+const cx=600, cy=400, R=250, nodeR=30;
+const svg=document.getElementById("ring");
+svg.innerHTML=`<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#EB7D41"/></marker></defs>`;
+const base=document.createElementNS(NS,"circle");
+base.setAttribute("cx",cx);base.setAttribute("cy",cy);base.setAttribute("r",R);
+base.setAttribute("fill","none");base.setAttribute("stroke","#E2DCD5");base.setAttribute("stroke-width","2");
+svg.appendChild(base);
+const n=labels.length, gap=11*Math.PI/180;
+const ang=i=>(-90+i*(360/n))*Math.PI/180;
+const pt=(a,r)=>[cx+r*Math.cos(a), cy+r*Math.sin(a)];
+for(let i=0;i<n;i++){
+  const a0=ang(i)+gap; let a1=ang((i+1)%n)-gap; if(a1<a0)a1+=2*Math.PI;
+  const [x0,y0]=pt(a0,R),[x1,y1]=pt(a1,R);
+  const p=document.createElementNS(NS,"path");
+  p.setAttribute("d",`M ${x0.toFixed(1)} ${y0.toFixed(1)} A ${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`);
+  p.setAttribute("fill","none");p.setAttribute("stroke","#EB7D41");p.setAttribute("stroke-width","3");
+  p.setAttribute("marker-end","url(#ah)");svg.appendChild(p);
+}
+const ct=document.createElementNS(NS,"text");
+ct.setAttribute("x",cx);ct.setAttribute("y",cy-2);ct.setAttribute("text-anchor","middle");
+ct.setAttribute("font-size","58");ct.setAttribute("fill","#EB7D41");ct.setAttribute("font-weight","800");
+ct.textContent="↻";svg.appendChild(ct);
+const ct2=document.createElementNS(NS,"text");
+ct2.setAttribute("x",cx);ct2.setAttribute("y",cy+34);ct2.setAttribute("text-anchor","middle");
+ct2.setAttribute("font-size","18");ct2.setAttribute("fill","#6B6B7B");ct2.setAttribute("letter-spacing","2");
+ct2.textContent="AND ROUND AGAIN";svg.appendChild(ct2);
+for(let i=0;i<n;i++){
+  const a=ang(i);const [nx,ny]=pt(a,R);
+  const c=document.createElementNS(NS,"circle");
+  c.setAttribute("cx",nx);c.setAttribute("cy",ny);c.setAttribute("r",nodeR);
+  c.setAttribute("fill", i===0 ? "#EB7D41" : "#0B4132");svg.appendChild(c);
+  const num=document.createElementNS(NS,"text");
+  num.setAttribute("x",nx);num.setAttribute("y",ny+8);num.setAttribute("text-anchor","middle");
+  num.setAttribute("font-size","22");num.setAttribute("fill","#fff");num.setAttribute("font-weight","700");
+  num.textContent=(i+1);svg.appendChild(num);
+  const [lx,ly]=pt(a,R+50);const cos=Math.cos(a);
+  const anchor=cos>0.35?"start":cos<-0.35?"end":"middle";
+  const t=document.createElementNS(NS,"text");
+  t.setAttribute("x",lx);t.setAttribute("y",ly);t.setAttribute("text-anchor",anchor);
+  t.setAttribute("font-size","21");t.setAttribute("fill","#093428");t.setAttribute("font-weight","700");
+  labels[i].forEach((line,k)=>{
+    const ts=document.createElementNS(NS,"tspan");
+    ts.setAttribute("x",lx);ts.setAttribute("dy",k===0?(labels[i].length>1?"-2":"6"):"24");
+    ts.textContent=line;t.appendChild(ts);
+  });
+  svg.appendChild(t);
+}
+</script>
+</body></html>
